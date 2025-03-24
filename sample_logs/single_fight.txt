@@ -1,0 +1,1038 @@
+[01:14:23.304][143084][NetworkLobbyUGS] Host lobby venueId: 0 maxPlayers: 4
+
+[01:14:23.304][143084][NetworkLobbyUGS] State: Hosting
+
+[01:14:23.504][143102][NetworkLobbyUGS] ClientIp: 255.255.255.255
+
+[01:14:23.662][143116][NetworkLobbyUGS] Lobby id: vAc62XnHydkryWriA3t9Qk code: D8MWF6
+
+[01:14:23.662][143116][NetworkLobbyUGS] Event connection state: Subscribing
+
+[01:14:23.804][143128][NetworkLobbyUGS] Event connection state: Subscribed
+
+[01:14:23.804][143128][NetworkLobbyUGS] State: Connected
+
+[01:14:42.220][144781]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:14:42.220][144781]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:14:42.247][144783][OVRManager] OnApplicationFocus(false)
+
+[01:14:42.254][144784][OVRManager] InputFocusLost event
+OVRManager:Update()
+
+[01:14:42.254][144784][ApplicationStateManager] [144784] isPaused: True [runInBackground: True appFocused: False appPaused: False headsetMounted: True inputFocus: False]
+
+[01:14:42.348][144788][OVRManager] OnApplicationPause(true)
+
+[01:14:42.359][144788][OVRManager] OnApplicationFocus(true)
+
+[01:14:42.442][144788][OVRManager] OnApplicationFocus(false)
+
+[01:15:10.523][144788][OVRManager] OnApplicationFocus(true)
+
+[01:15:10.527][144788][OVRManager] OnApplicationPause(false)
+
+[01:15:10.529][144789][GameRunner] Game stalled: 28.20676s ticksF: 3384.811 ticks: 3384 overhead: 0.006758627s
+TOTF2.Damage.CharacterDamageEmitter:TOTF2.Damage.IDamageEmitter.GetInstanceID()
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:15:10.615][144790][OVRManager] InputFocusAcquired event
+OVRManager:Update()
+
+[01:15:10.615][144790][ApplicationStateManager] [144790] isPaused: False [runInBackground: True appFocused: True appPaused: False headsetMounted: True inputFocus: True]
+
+[01:15:10.616][144790]Recenter event detected
+OVRDisplay:Update()
+OVRManager:Update()
+
+[01:15:20.893][145712][OVRManager] OnApplicationFocus(false)
+
+[01:15:20.898][145713][OVRManager] InputFocusLost event
+OVRManager:Update()
+
+[01:15:20.898][145713][ApplicationStateManager] [145713] isPaused: True [runInBackground: True appFocused: False appPaused: False headsetMounted: True inputFocus: False]
+
+[01:15:20.899][145713]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:15:20.899][145713]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:16:15.757][150634][OVRManager] OnApplicationFocus(true)
+
+[01:16:15.774][150636][OVRManager] InputFocusAcquired event
+OVRManager:Update()
+
+[01:16:15.774][150636][ApplicationStateManager] [150636] isPaused: False [runInBackground: True appFocused: True appPaused: False headsetMounted: True inputFocus: True]
+
+[01:16:23.188][151300]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:16:23.189][151300]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:16:23.206][151301][OVRManager] OnApplicationFocus(false)
+
+[01:16:23.222][151303][OVRManager] InputFocusLost event
+OVRManager:Update()
+
+[01:16:23.222][151303][ApplicationStateManager] [151303] isPaused: True [runInBackground: True appFocused: False appPaused: False headsetMounted: True inputFocus: False]
+
+[01:16:41.006][152895][OVRManager] OnApplicationFocus(true)
+
+[01:16:41.012][152896][OVRManager] InputFocusAcquired event
+OVRManager:Update()
+
+[01:16:41.012][152896][ApplicationStateManager] [152896] isPaused: False [runInBackground: True appFocused: True appPaused: False headsetMounted: True inputFocus: True]
+
+[01:16:56.613][154297]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:16:56.613][154297]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:16:56.635][154299][OVRManager] InputFocusLost event
+OVRManager:Update()
+
+[01:16:56.635][154299][ApplicationStateManager] [154299] isPaused: True [runInBackground: True appFocused: True appPaused: False headsetMounted: True inputFocus: False]
+
+[01:16:56.640][154299][OVRManager] OnApplicationFocus(false)
+
+[01:16:56.750][154305][OVRManager] OnApplicationPause(true)
+
+[01:16:56.761][154305][OVRManager] OnApplicationFocus(true)
+
+[01:16:56.836][154305][OVRManager] OnApplicationFocus(false)
+
+[01:17:17.435][154305][OVRManager] OnApplicationFocus(true)
+
+[01:17:17.441][154305][OVRManager] OnApplicationPause(false)
+
+[01:17:17.442][154306][GameRunner] Game stalled: 20.71826s ticksF: 2486.191 ticks: 2486 overhead: 0.001593018s
+TOTF2.Damage.CharacterDamageEmitter:TOTF2.Damage.IDamageEmitter.GetInstanceID()
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:17:17.575][154307][OVRManager] InputFocusAcquired event
+OVRManager:Update()
+
+[01:17:17.575][154307][ApplicationStateManager] [154307] isPaused: False [runInBackground: True appFocused: True appPaused: False headsetMounted: True inputFocus: True]
+
+[01:17:17.575][154307]Recenter event detected
+OVRDisplay:Update()
+OVRManager:Update()
+
+[01:17:20.279][154546]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:17:20.279][154546]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:17:20.673][154578][OVRManager] OnApplicationFocus(false)
+
+[01:17:20.679][154579][OVRManager] InputFocusLost event
+OVRManager:Update()
+
+[01:17:20.679][154579][ApplicationStateManager] [154579] isPaused: True [runInBackground: True appFocused: False appPaused: False headsetMounted: True inputFocus: False]
+
+[01:17:42.993][156577][OVRManager] OnApplicationFocus(true)
+
+[01:17:42.998][156578][OVRManager] InputFocusAcquired event
+OVRManager:Update()
+
+[01:17:42.998][156578][ApplicationStateManager] [156578] isPaused: False [runInBackground: True appFocused: True appPaused: False headsetMounted: True inputFocus: True]
+
+[01:17:46.217][156866]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:17:46.218][156866]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:17:46.533][156894][OVRManager] OnApplicationFocus(false)
+
+[01:17:46.541][156895][OVRManager] InputFocusLost event
+OVRManager:Update()
+
+[01:17:46.541][156895][ApplicationStateManager] [156895] isPaused: True [runInBackground: True appFocused: False appPaused: False headsetMounted: True inputFocus: False]
+
+[01:17:50.400][157237][OVRManager] OnApplicationFocus(true)
+
+[01:17:50.416][157239][OVRManager] InputFocusAcquired event
+OVRManager:Update()
+
+[01:17:50.416][157239][ApplicationStateManager] [157239] isPaused: False [runInBackground: True appFocused: True appPaused: False headsetMounted: True inputFocus: True]
+
+[01:20:45.512][172957][NetworkLobbyUGS] OnPlayerJoined: [1] anonymous_opponent
+
+[01:20:47.098][173099][OVRManager] OnApplicationFocus(false)
+
+[01:20:47.125][173101][OVRManager] InputFocusLost event
+OVRManager:Update()
+
+[01:20:47.125][173101][ApplicationStateManager] [173101] isPaused: True [runInBackground: True appFocused: False appPaused: False headsetMounted: True inputFocus: False]
+
+[01:20:47.126][173101]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:20:47.126][173101]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:20:52.727][173581][OVRManager] OnApplicationFocus(true)
+
+[01:20:52.737][173582][OVRManager] InputFocusAcquired event
+OVRManager:Update()
+
+[01:20:52.737][173582][ApplicationStateManager] [173582] isPaused: False [runInBackground: True appFocused: True appPaused: False headsetMounted: True inputFocus: True]
+
+[01:21:08.780][175016][NetworkLobbyUGS] State: Deploying
+
+[01:21:08.781][175016][NetworkDeploymentCloudCode] Start deployment
+
+[01:21:09.390][175067][NetworkDeploymentCloudCode] Start deployment response: [Deploy Response done: True success: True message: Deployment started]
+
+[01:21:16.529][175707][NetworkLobbyUGS] State: Deployed
+
+[01:21:17.053][175754][NetworkGameManager] State: ConnectingToClient
+
+[01:21:17.055][175754][NetworkClientLiteNet] Connect: [Allocation 172.234.199.214:32214 key: D8MWF6 id: 2e7ce7c3981f]
+
+[01:21:17.057][175754][NetworkClientLiteNet] [1] Trying to connect to 172.234.199.214:32214
+
+[01:21:17.057][175754][NetworkClientLiteNet] [0] Connected to 172.234.199.214:32214
+
+[01:21:17.157][175763][NetworkClientLiteNet] [0] OnPeerConnected: 0 PlayerBlue
+
+[01:21:17.370][175782][NetworkClientLiteNet] Client version: 0.6.6, [server version: 0.6.6.139 location: Chicago, venueId: 1, roundSettings: [RoundSettings rounds: 2 roundDuration: 120s breakDuration: 60s], clinchSettings: [timeBeforeClinchActivation: 3 clinchActivationTimerDecayRate: 1 clinchActivationIntersectionMultiplier: 4], foulSettings: [m_lookingDownPenaltyFoulCount: 6, m_backTurnedPenaltyFoulCount: 6 m_clinchPenaltyFoulCount: 6, m_penaltyWarningThreshold: 2m_foulsAmountBeforeDisqualification:50, AttestationNonce: giiFJFBh54Xpmuho4AbssA==]
+
+[01:21:17.370][175782][NetworkGameManager] State: LoadingVenue
+
+[01:21:17.370][175782][NetworkClientLiteNet] [0] Player connected: [id: 1 type: PlayerRed]
+
+[01:21:17.370][175782][NetworkGameManager] [Id: 1 Type: PlayerRed] Player connected
+
+[01:21:17.385][175782]Damage Falloff Pref: Outward
+ Outward 1 | 0 | 0.05
+ Lateral 2 | 0.3 | 0.45
+
+[01:21:17.391][175782][NetworkClientLiteNet] [0] Player config: [id: 1 type: PlayerRed playAreaX: 2.963325 playAreaY: 3.923878]
+
+[01:21:17.397][175782][NetworkClientLiteNet] [0] Customization profile: [id: 1 Customization Profile]
+
+[01:21:20.717][176030]Ignoring depth surface store action as it is memoryless
+UnityEngine.Rendering.RenderPipelineManager:DoRenderLoop_Internal(RenderPipelineAsset, IntPtr, Object)
+
+[01:21:21.374][176058][NetworkGameManager] State: WaitingForOthers
+
+[01:21:21.987][176113][NetworkClientLiteNet] [0] Match state: [state: MatchIntro roundIndex: 0 time: 0]
+
+[01:21:21.988][176113]Custom Match Started.
+
+[01:21:21.989][176113][NetworkGameManager] State: InMatch
+
+[01:21:29.646][176799][NetworkClientLiteNet] [0] Send match state completed: MatchIntro
+
+[01:21:29.700][176804][NetworkClientLiteNet] [0] Match state: [state: RoundIntro roundIndex: 0 time: 0]
+
+[01:21:35.862][177357][NetworkClientLiteNet] [0] Send match state completed: RoundIntro
+
+[01:21:35.924][177363][NetworkClientLiteNet] [0] Match state: [state: RoundFight roundIndex: 0 time: 120]
+
+[01:21:43.072][178005][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: Nose movementType: Stationary amount: 45.10925
+
+[01:21:43.073][178005]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:43.106][178008]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:43.109][178008]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:45.066][178184][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: Stationary amount: 42.67232
+
+[01:21:46.047][178272]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:46.049][178272]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:46.090][178276][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: Stationary amount: 3.592865
+
+[01:21:46.091][178276]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:46.392][178303][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Neck weakPoint: None movementType: Stationary amount: 0
+
+[01:21:46.403][178304][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:21:46.505][178312]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:46.507][178312]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:48.328][178475][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: Stationary amount: 37.10659
+
+[01:21:48.340][178476]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:48.342][178476]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:48.585][178498][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: Stationary amount: 44.84523
+
+[01:21:51.449][178755]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:51.459][178756]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:51.503][178760][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: Nose movementType: Stationary amount: 30.18249
+
+[01:21:51.726][178779]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:51.728][178779]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:51.738][178780]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:51.740][178780]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:51.780][178783][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:21:51.780][178783][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: MovingAwayFromPunch amount: 30.2809
+
+[01:21:53.520][178939]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:53.531][178940]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:53.533][178940]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:21:53.564][178943][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: Stationary amount: 49.38306
+
+[01:21:59.623][179485][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Head weakPoint: Nose movementType: Stationary amount: 0.1282665
+
+[01:22:00.549][179568]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:22:00.636][179576][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: Stationary amount: 7.626801
+
+[01:22:01.716][179673][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: Nose movementType: Stationary amount: 38.83654
+
+[01:22:01.749][179676][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:22:03.029][179791][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: Nose movementType: Stationary amount: 9.939381
+
+[01:22:04.556][179927][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: Nose movementType: Stationary amount: 32.1956
+
+[01:22:04.567][179928][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:22:06.794][180128][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: Stationary amount: 14.92978
+
+[01:22:06.816][180130][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:22:08.153][180250][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: Stationary amount: 32.49286
+
+[01:22:08.231][180257][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:22:09.790][180397][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: Nose movementType: Stationary amount: 45.62113
+
+[01:22:09.834][180401][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:22:15.529][180912][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: Stationary weakPoint: Chin amount: 5.794374. closest neutral corner: NeutralCorner2
+
+[01:22:23.200][181601][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: Nose movementType: Stationary amount: 33.59907
+
+[01:22:23.233][181604][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:22:24.159][181687]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:22:24.180][181689]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:22:24.182][181689]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:22:24.201][181691][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: Stationary amount: 39.85906
+
+[01:22:24.245][181695][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:22:24.268][181697]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:22:24.491][181717][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: Stationary amount: 54.63507
+
+[01:22:24.549][181722]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:22:24.638][181730]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:22:39.082][183027][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:22:39.084][183027][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: Stationary weakPoint: Chin amount: 55.56987. closest neutral corner: NeutralCorner2
+
+[01:22:42.380][183323][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: Stationary weakPoint: None amount: 46.33846. closest neutral corner: NeutralCorner2
+
+[01:22:45.968][183645][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: Stationary weakPoint: Chin amount: 30.63237. closest neutral corner: NeutralCorner2
+
+[01:22:46.556][183698][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:22:58.729][184790][NetworkClientLiteNet] [0] Player foul received: [player who fouled: PlayerRed,foul type:LookingDown,blueNewPosition: CompressedFloat3(30340, 32767, 30027), redNewPosition: CompressedFloat3(36387, 32767, 34993)]
+
+[01:23:04.900][185344][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: MovingIntoPunch weakPoint: Chin amount: 0.0721311. closest neutral corner: NeutralCorner2
+
+[01:23:04.921][185346][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:23:07.805][185605][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: MovingIntoPunch weakPoint: Chin amount: 0.1116905. closest neutral corner: NeutralCorner2
+
+[01:23:07.817][185606][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:23:07.928][185616][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: None amount: 0.0002225816. closest neutral corner: NeutralCorner2
+
+[01:23:10.625][185858][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Knockdown region: Head movement: MovingIntoPunch weakPoint: Chin amount: 97.46338. closest neutral corner: NeutralCorner2
+
+[01:23:10.666][185862][NetworkClientLiteNet] [0] [round: 0 winner: PlayerRed blue: [score: 8 dmg: 235 KD: 1 KO: False TKO: False fouls: ] red: [score: 10 dmg: 593 KD: 0 KO: False TKO: False fouls: foulType:LookingDown, foul amount: 1|]]
+
+[01:23:10.667][185862][NetworkClientLiteNet] [0] Match state: [state: RoundKnockdown roundIndex: 0 time: 6.5]
+
+[01:23:26.339][187267][NetworkClientLiteNet] [0] Send match state completed: RoundKnockdown
+
+[01:23:27.195][187344][NetworkClientLiteNet] [0] Match state: [state: RoundFight roundIndex: 0 time: 11.49027]
+
+[01:23:28.928][187498][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: MovingIntoPunch amount: 8.386109
+
+[01:23:29.041][187508][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:23:29.353][187536][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Head weakPoint: Chin movementType: Stationary amount: 0
+
+[01:23:29.443][187544][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:23:29.610][187559][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Head weakPoint: None movementType: Stationary amount: 0.0002885739
+
+[01:23:29.744][187571][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:23:31.368][187717][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: MovingIntoPunch amount: 63.00665
+
+[01:23:31.390][187719][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:23:33.094][187872][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: MovingIntoPunch amount: 27.55697
+
+[01:23:33.317][187892][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:23:33.774][187933][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Head weakPoint: None movementType: MovingIntoPunch amount: 0.02851418
+
+[01:23:34.754][188021][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: MovingIntoPunch amount: 32.15554
+
+[01:23:34.889][188033][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:23:36.317][188161]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:23:36.358][188165][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: MovingIntoPunch amount: 31.95307
+
+[01:23:36.392][188168]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:23:36.425][188171]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:23:36.502][188178][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:23:36.624][188189][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Head weakPoint: Chin movementType: MovingIntoPunch amount: 0
+
+[01:23:37.752][188290]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:23:37.773][188292]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:23:37.785][188293]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:23:37.795][188294][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: MovingIntoPunch amount: 6.374364
+
+[01:23:37.872][188301]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:23:37.875][188301]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:23:37.984][188311][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:23:37.995][188312][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Head weakPoint: None movementType: Stationary amount: 0.001485904
+
+[01:23:38.184][188329][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: Stationary amount: 8.217861
+
+[01:23:38.679][188373][NetworkClientLiteNet] [0] Send match state completed: RoundFight
+
+[01:23:38.988][188400][NetworkClientLiteNet] [0] [round: 0 winner: PlayerRed blue: [score: 9 dmg: 235 KD: 1 KO: False TKO: False fouls: ] red: [score: 10 dmg: 770 KD: 0 KO: False TKO: False fouls: foulType:LookingDown, foul amount: 1|]]
+
+[01:23:38.988][188400][NetworkClientLiteNet] [0] Match state: [state: RoundBreak roundIndex: 1 time: 0]
+
+[01:24:33.486][193291][NetworkClientLiteNet] [0] Send match state completed: RoundBreak
+
+[01:24:33.572][193299][NetworkClientLiteNet] [0] Match state: [state: RoundIntro roundIndex: 1 time: 0]
+
+[01:24:39.721][193849][NetworkClientLiteNet] [0] Send match state completed: RoundIntro
+
+[01:24:39.818][193858][NetworkClientLiteNet] [0] Match state: [state: RoundFight roundIndex: 1 time: 120]
+
+[01:24:54.741][195198][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: Nose movementType: MovingIntoPunch amount: 67.57003
+
+[01:24:54.763][195199]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:24:54.773][195200][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:24:54.995][195220][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: MovingIntoPunch amount: 94.39413
+
+[01:24:54.995][195220][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:24:55.073][195227][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: Chin movementType: Stationary amount: 4.811992
+
+[01:25:06.601][196262][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: MovingIntoPunch amount: 18.79731
+
+[01:25:06.602][196262]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:25:06.612][196263][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:25:06.613][196263]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:25:06.767][196277][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Head weakPoint: None movementType: Stationary amount: 5.242737E-08
+
+[01:25:06.768][196277]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:25:06.790][196279][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: Chin movementType: MovingIntoPunch amount: 81.31855
+
+[01:25:06.802][196280]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:25:07.069][196304][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Head weakPoint: None movementType: Stationary amount: 0.06089808
+
+[01:25:07.570][196349][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Head weakPoint: None movementType: Stationary amount: 2.752653E-06
+
+[01:25:07.570][196349][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:25:07.670][196358][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Head weakPoint: None movementType: MovingIntoPunch amount: 0.002965339
+
+[01:25:12.084][196754][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Neck movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:25:12.183][196763][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: None amount: 0.0017747. closest neutral corner: NeutralCorner2
+
+[01:25:17.875][197274][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Chest movement: MovingIntoPunch weakPoint: None amount: 0.07755596. closest neutral corner: NeutralCorner2
+
+[01:25:17.885][197275][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: MovingIntoPunch weakPoint: Chin amount: 0.2743751. closest neutral corner: NeutralCorner2
+
+[01:25:18.273][197309][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.0001568125. closest neutral corner: NeutralCorner2
+
+[01:25:22.306][197671][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: MovingIntoPunch weakPoint: Chin amount: 82.08688. closest neutral corner: NeutralCorner2
+
+[01:25:22.372][197677][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:25:22.505][197689][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Neck movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:25:26.483][198046][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Chest movement: MovingIntoPunch weakPoint: None amount: 26.63323. closest neutral corner: NeutralCorner2
+
+[01:25:26.671][198063][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:25:26.784][198073][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: MovingAwayFromPunch weakPoint: Chin amount: 0.0007221317. closest neutral corner: NeutralCorner2
+
+[01:25:29.190][198289][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: MovingIntoPunch weakPoint: Chin amount: 0.06395879. closest neutral corner: NeutralCorner2
+
+[01:25:29.200][198290][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:25:29.368][198305][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Neck movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:25:30.468][198404][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: MovingAwayFromPunch weakPoint: Chin amount: 0.004248254. closest neutral corner: NeutralCorner1
+
+[01:25:34.924][198804][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: MovingIntoPunch weakPoint: None amount: 0.01196908. closest neutral corner: NeutralCorner1
+
+[01:25:37.844][199066][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: MovingIntoPunch weakPoint: Nose amount: 58.60706. closest neutral corner: NeutralCorner2
+
+[01:25:38.029][199083][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: MovingIntoPunch weakPoint: None amount: 76.05054. closest neutral corner: NeutralCorner2
+
+[01:25:38.796][199149][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner1
+
+[01:25:52.388][200369][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: Stationary weakPoint: None amount: 39.85014. closest neutral corner: NeutralCorner2
+
+[01:25:52.433][200373][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:25:52.565][200385][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: MovingIntoPunch weakPoint: Chin amount: 62.69165. closest neutral corner: NeutralCorner2
+
+[01:25:52.586][200387][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:25:55.460][200645][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: Stationary weakPoint: None amount: 1.446896. closest neutral corner: NeutralCorner2
+
+[01:25:55.894][200684][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Nose amount: 0.6383686. closest neutral corner: NeutralCorner2
+
+[01:25:56.485][200737][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Chest movement: Stationary weakPoint: None amount: 0.0297995. closest neutral corner: NeutralCorner2
+
+[01:25:56.596][200747][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 1.421909E-13. closest neutral corner: NeutralCorner2
+
+[01:25:57.032][200786][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.002858154. closest neutral corner: NeutralCorner2
+
+[01:25:57.311][200811][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.0003147602. closest neutral corner: NeutralCorner2
+
+[01:25:57.621][200839][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.001637423. closest neutral corner: NeutralCorner2
+
+[01:25:57.766][200852][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 3.344722E-06. closest neutral corner: NeutralCorner2
+
+[01:25:57.966][200870][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.0008685367. closest neutral corner: NeutralCorner2
+
+[01:26:12.668][202189][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: Stationary weakPoint: Chin amount: 22.25534. closest neutral corner: NeutralCorner2
+
+[01:26:12.701][202192][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:26:13.179][202235][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: Stationary weakPoint: Chin amount: 4.858568. closest neutral corner: NeutralCorner2
+
+[01:26:13.224][202239][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:26:13.613][202274][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: Stationary weakPoint: Chin amount: 4.150479. closest neutral corner: NeutralCorner2
+
+[01:26:13.658][202278][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:26:13.991][202308][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.9084527. closest neutral corner: NeutralCorner2
+
+[01:26:14.036][202312][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:26:14.316][202337][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.006359748. closest neutral corner: NeutralCorner2
+
+[01:26:14.616][202364][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.02654654. closest neutral corner: NeutralCorner2
+
+[01:26:14.872][202387][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.01091455. closest neutral corner: NeutralCorner2
+
+[01:26:15.119][202409][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.002303764. closest neutral corner: NeutralCorner2
+
+[01:26:15.385][202433][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.01071138. closest neutral corner: NeutralCorner2
+
+[01:26:15.619][202454][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.007326934. closest neutral corner: NeutralCorner2
+
+[01:26:15.886][202478][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.01538284. closest neutral corner: NeutralCorner2
+
+[01:26:16.120][202499][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.002259366. closest neutral corner: NeutralCorner2
+
+[01:26:16.376][202522][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 0.01653987. closest neutral corner: NeutralCorner2
+
+[01:26:16.688][202550][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: Chin amount: 3.568285E-05. closest neutral corner: NeutralCorner2
+
+[01:26:18.427][202706][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: Stationary weakPoint: Chin amount: 66.4868. closest neutral corner: NeutralCorner2
+
+[01:26:18.524][202715][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:26:23.826][203188][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Chest movement: MovingIntoPunch weakPoint: None amount: 0.008598755. closest neutral corner: NeutralCorner2
+
+[01:26:24.016][203205][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: MovingIntoPunch weakPoint: Chin amount: 0.1825933. closest neutral corner: NeutralCorner2
+
+[01:26:24.026][203206][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:26:24.272][203228][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Head movement: Stationary weakPoint: None amount: 5.882755E-05. closest neutral corner: NeutralCorner2
+
+[01:26:27.892][203553][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Chest movement: MovingIntoPunch weakPoint: None amount: 31.84144. closest neutral corner: NeutralCorner2
+
+[01:26:31.289][203858][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: Hit region: Head movement: MovingIntoPunch weakPoint: Chin amount: 86.6681. closest neutral corner: NeutralCorner2
+
+[01:26:31.301][203859][MatchNetworked] Match damage send: Id: 0 Type: PlayerBlue type: None region: Shoulder movement: Stationary weakPoint: None amount: 0. closest neutral corner: NeutralCorner2
+
+[01:26:38.783][204530]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:26:38.792][204531][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: Stationary amount: 35.00365
+
+[01:26:39.822][204622][NetworkClientLiteNet] [0] Send match state completed: RoundFight
+
+[01:26:40.408][204675]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:26:40.419][204676]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:26:40.452][204679][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: MovingIntoPunch amount: 22.54139
+
+[01:26:40.453][204679]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:26:40.474][204681]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:26:40.496][204683]Warning: Invalid quaternion rotation. Setting quaternion rotation to identity
+UnityEngine.ConfigurableJoint:set_targetRotation(Quaternion)
+TOTF2.Physics.MuscleSystem:TimestepUpdate(Single)
+TOTF2.Character.GameCharacter:TimestepFixedUpdate(Single, Single)
+TOTF2.Game.Structure.GameRunner:GameLoop(Single, Single)
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:26:40.507][204684][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:26:40.719][204703][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: Hit region: Head weakPoint: None movementType: MovingIntoPunch amount: 70.38241
+
+[01:26:40.741][204705][MatchNetworked] Match damage received: Id: 1 Type: PlayerRed, type: None region: Shoulder weakPoint: None movementType: Stationary amount: 0
+
+[01:26:42.758][204886][NetworkClientLiteNet] [0] [round: 1 winner: PlayerRed blue: [score: 9 dmg: 565 KD: 0 KO: False TKO: False fouls: ] red: [score: 10 dmg: 394 KD: 0 KO: False TKO: False fouls: ]]
+
+[01:26:42.758][204886][NetworkClientLiteNet] [0] Match Results: RedWinPoints, Blue: 18, Red: 20
+
+[01:26:42.759][204886][MatchEndScreen] UserId: 31C0BAKzS0ow07iGyXYfsy18rV1E blueUserId: 31C0BAKzS0ow07iGyXYfsy18rV1E redUserId: nlXZusmJh33cT0Q7iilVuPhrJBZy
+
+[01:26:42.766][204886][NetworkClientLiteNet] [0] Match state: [state: Results roundIndex: 1 time: 0]
+
+[01:26:59.421][206376][NetworkClientLiteNet] [0] Send match state completed: Results
+
+[01:26:59.485][206382][NetworkClientLiteNet] [0] Match state: [state: End roundIndex: 1 time: 0]
+
+[01:27:08.985][207231]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:27:08.985][207231]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:27:09.279][207241][OVRManager] OnApplicationFocus(false)
+
+[01:27:09.296][207242][OVRManager] InputFocusLost event
+OVRManager:Update()
+
+[01:27:09.296][207242][ApplicationStateManager] [207242] isPaused: True [runInBackground: True appFocused: False appPaused: False headsetMounted: True inputFocus: False]
+
+[01:27:13.949][207632][OVRManager] OnApplicationFocus(true)
+
+[01:27:13.952][207633][OVRManager] InputFocusAcquired event
+OVRManager:Update()
+
+[01:27:13.952][207633][ApplicationStateManager] [207633] isPaused: False [runInBackground: True appFocused: True appPaused: False headsetMounted: True inputFocus: True]
+
+[01:27:30.220][209088][NetworkClientLiteNet] OnPeerDisconnected reason: RemoteConnectionClose info: ShutdownGracefully errorCode: 0
+
+[01:27:30.220][209088][NetworkGameManager] State: Disconnected
+
+[01:27:30.387][209103][MatchmakerCloudCode] Refreshing Player Rating. Change Expected: (False). Retrieved 1734 vs Previous 1734
+
+[01:27:30.387][209103][MatchmakerCloudCode] Refreshing Player Rating. Setting Previous rating to (1734)
+
+[01:27:30.387][209103][MatchmakerCloudCode] Refreshing Player Rating. Out of sync? False
+
+[01:27:31.241][209178][NetworkLobbyUGS] State: Connected
+
+[01:27:35.566][209531]Damage Falloff Pref: Outward
+ Outward 1 | 0 | 0.05
+ Lateral 2 | 0.3 | 0.45
+
+[01:27:35.591][209531]Ignoring depth surface store action as it is memoryless
+UnityEngine.Rendering.RenderPipelineManager:DoRenderLoop_Internal(RenderPipelineAsset, IntPtr, Object)
+
+[01:29:45.434][221172]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:29:45.434][221172]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:29:45.495][221177][OVRManager] OnApplicationFocus(false)
+
+[01:29:45.537][221181][OVRManager] InputFocusLost event
+OVRManager:Update()
+
+[01:29:45.537][221181][ApplicationStateManager] [221181] isPaused: True [runInBackground: True appFocused: False appPaused: False headsetMounted: True inputFocus: False]
+
+[01:30:05.779][222983][OVRManager] OnApplicationPause(true)
+
+[01:30:05.809][222983][OVRManager] OnApplicationFocus(true)
+
+[01:30:05.890][222983][OVRManager] OnApplicationFocus(false)
+
+[01:48:45.896][222983][OVRManager] OnApplicationFocus(true)
+
+[01:48:45.903][222983][OVRManager] OnApplicationPause(false)
+
+[01:48:45.919][222984][GameRunner] Game stalled: 1120.162s ticksF: 134419.4 ticks: 134419 overhead: 0.003515625s
+TOTF2.Damage.CharacterDamageEmitter:TOTF2.Damage.IDamageEmitter.GetInstanceID()
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:48:45.956][222984][NetworkLobbyUGS] Event connection state: Unsynced
+
+[01:48:45.975][222984][NetworkLobbyUGS] Notification: LeftDueToTimeout
+
+[01:48:45.981][222984][NetworkLobbyUGS] State: Disconnecting
+
+[01:48:45.983][222984][NetworkLobbyUGS] Event connection state: Unsubscribed
+
+[01:48:45.983][222984][NetworkLobbyUGS] State: Disconnected
+
+[01:48:46.118][222985][OVRManager] InputFocusAcquired event
+OVRManager:Update()
+
+[01:48:46.118][222985][ApplicationStateManager] [222985] isPaused: False [runInBackground: True appFocused: True appPaused: False headsetMounted: True inputFocus: True]
+
+[01:48:46.118][222985]Recenter event detected
+OVRDisplay:Update()
+OVRManager:Update()
+
+[01:48:46.149][222986]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:48:46.149][222986]Unable to process a controller whose SampleRateHz is 0 now.
+OVRHapticsOutput:Process()
+OVRHaptics:Process()
+OVRManager:LateUpdate()
+
+[01:48:46.160][222987]Recenter event detected
+OVRDisplay:Update()
+OVRManager:Update()
+
+[01:48:46.195][222987][OVRManager] OnApplicationFocus(false)
+
+[01:48:46.202][222988][OVRManager] InputFocusLost event
+OVRManager:Update()
+
+[01:48:46.202][222988][ApplicationStateManager] [222988] isPaused: True [runInBackground: True appFocused: False appPaused: False headsetMounted: True inputFocus: False]
+
+[01:48:46.511][222996][OVRManager] OnApplicationPause(true)
+
+[01:48:49.218][222996][OVRManager] OnApplicationFocus(true)
+
+[01:48:49.222][222996][OVRManager] OnApplicationPause(false)
+
+[01:48:49.231][222997][GameRunner] Game stalled: 2.889623s ticksF: 346.7548 ticks: 346 overhead: 0.006289673s
+TOTF2.Damage.CharacterDamageEmitter:TOTF2.Damage.IDamageEmitter.GetInstanceID()
+TOTF2.Game.Structure.GameRunner:Update()
+
+[01:48:49.571][222998][OVRManager] InputFocusAcquired event
+OVRManager:Update()
+
+[01:48:49.571][222998][ApplicationStateManager] [222998] isPaused: False [runInBackground: True appFocused: True appPaused: False headsetMounted: True inputFocus: True]
+
+[01:48:49.571][222998]Recenter event detected
+OVRDisplay:Update()
+OVRManager:Update()
+
+[01:48:49.632][223000][OVRManager] OnApplicationFocus(false)
+
+[01:48:49.664][223002][OVRManager] InputFocusLost event
+OVRManager:Update()
+
+[01:48:49.664][223002][ApplicationStateManager] [223002] isPaused: True [runInBackground: True appFocused: False appPaused: False headsetMounted: True inputFocus: False]
+

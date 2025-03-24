@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Damage Log Visualizer</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        text-align: center;
+      }
+      #controls {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      #chart_div {
+        width: 100%;
+        height: 500px;
+      }
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+      // Load the Google Charts package
+      google.charts.load("current", { packages: ["corechart"] });
+      google.charts.setOnLoadCallback(init);
+
+      // Global variables for series definitions.
+      const seriesOptions = {
+        // key: team_category
+        // Guard: damageType=="None" -> square marker.
+        // Strike: damageType=="Hit" -> triangle filled.
+        // Knockdown: damageType not "None" or "Hit" -> triangle outlined.
+      };
+
+      // Map team names to colors.
+      const teamColors = {
+        PlayerRed: "red",
+        PlayerBlue: "blue",
+      };
+
+      // This function is called once Charts is loaded.
+      function init() {
+        document
+          .getElementById("fileInput")
+          .addEventListener("change", handleFileSelect, false);
+      }
+
+      // Parse the log file text and return an array of data objects.
+      function parseLog(text) {
+        const lines = text.split("\n");
+        const dataPoints = [];
+        let firstTimeSeconds = null;
+
+        // Regular expressions for send and receive lines.
+        const sendRegex = /\[(.*?)\].*Match damage send: Id: \d+ Type: (\w+) type: (\w+) region: (\w+) movement: (\w*) weakPoint: (\w*) amount: ([\d.]+).*closest neutral corner: (\w+)/;
+        const receiveRegex = /\[(.*?)\].*Match damage received: Id: \d+ Type: (\w+), type: (\w+) region: (\w+) weakPoint: (\w*) movementType: (\w*) amount: ([\d.]+)/;
+
+        // Helper: Convert HH:MM:SS.mmm to seconds.
+        function timeToSeconds(tStr) {
+          const parts = tStr.split(":");
+          const hours = parseInt(parts[0], 10);
+          const minutes = parseInt(parts[1], 10);
+          const secParts = parts[2].split(".");
+          const seconds = parseInt(secParts[0], 10);
+          const millis = parseInt(secParts[1] || "0", 10);
+          return hours * 3600 + minutes * 60 + seconds + millis / 1000;
+        }
+
+        // Process each line.
+        for (const line of lines) {
+          let match;
+          let timestamp, team, damageType, region, weakPoint, movement, amount;
+          if ((match = sendRegex.exec(line))) {
+            // For send lines:
+            timestamp = match[1]; // timestamp string
+            team = match[2]; // e.g., PlayerBlue
+            damageType = match[3]; // this is the damage type (e.g., Knockdown)
+            region = match[4];
+            movement = match[5];
+            weakPoint = match[6] || "None";
+            amount = parseFloat(match[7]);
+          } else if ((match = receiveRegex.exec(line))) {
+            // For receive lines:
+            timestamp = match[1];
+            team = match[2]; // e.g., PlayerRed
+            damageType = match[3]; // typically "Hit" or "None"
+            region = match[4];
+            weakPoint = match[5] || "None";
+            movement = match[6];
+            amount = parseFloat(match[7]);
+          } else {
+            continue; // skip lines that don't match
+          }
+
+          // Convert timestamp to seconds offset.
+          const tSeconds = timeToSeconds(timestamp);
+          if (firstTimeSeconds === null) {
+            firstTimeSeconds = tSeconds;
+          }
+          const timeOffset = tSeconds - firstTimeSeconds;
+
+          // Categorize based on damageType.
+          // Following the instructions:
+          // - If damageType is "None": treat as Guard (blocked) → square.
+          // - If damageType is "Hit": treat as Strike → triangle filled.
+          // - Otherwise: treat as Knockdown/KD strike → triangle outlined.
+          let category;
+          if (damageType === "None") {
+            category = "guard";
+          } else if (damageType === "Hit") {
+            category = "strike";
+          } else {
+            category = "knockdown";
+          }
+
+          dataPoints.push({
+            time: timeOffset,
+            amount: amount,
+            team: team,
+            damageType: damageType,
+            region: region,
+            weakPoint: weakPoint,
+            movement: movement,
+            category: category,
+            tooltip:
+              "Time: " +
+              timestamp +
+              "\nTeam: " +
+              team +
+              "\nType: " +
+              damageType +
+              "\nWeakPoint: " +
+              weakPoint +
+              "\nAmount: " +
+              amount,
+          });
+        }
+        return dataPoints;
+      }
+
+      // Group data points into series based on team and category.
+      function groupData(dataPoints) {
+        const seriesData = {}; // key: team_category -> array of points
+        dataPoints.forEach((pt) => {
+          const key = pt.team + "_" + pt.category;
+          if (!seriesData[key]) {
+            seriesData[key] = [];
+          }
+          seriesData[key].push(pt);
+        });
+        return seriesData;
+      }
+
+      // Build a combined data table from the series.
+      // We create a column for time and then for each series a column for value and one for tooltip.
+      function buildDataTable(seriesData) {
+        // Get a sorted array of unique time values.
+        const timeSet = new Set();
+        for (const key in seriesData) {
+          seriesData[key].forEach((pt) => timeSet.add(pt.time));
+        }
+        const times = Array.from(timeSet).sort((a, b) => a - b);
+
+        // Determine series keys in sorted order.
+        const seriesKeys = Object.keys(seriesData).sort();
+
+        // Create the data table.
+        const dataTable = new google.visualization.DataTable();
+        dataTable.addColumn("number", "Time (s)");
+        // For each series, add two columns: one for value and one for tooltip.
+        seriesKeys.forEach((key) => {
+          dataTable.addColumn("number", key);
+          dataTable.addColumn({ type: "string", role: "tooltip", p: { html: true } });
+        });
+
+        // Build a mapping from series key to a lookup table of time -> {value, tooltip}
+        const seriesLookup = {};
+        seriesKeys.forEach((key) => {
+          seriesLookup[key] = {};
+          seriesData[key].forEach((pt) => {
+            // Assume one point per time per series.
+            seriesLookup[key][pt.time] = { value: pt.amount, tooltip: pt.tooltip };
+          });
+        });
+
+        // For each time, build a row.
+        const rows = times.map((t) => {
+          const row = [t];
+          seriesKeys.forEach((key) => {
+            if (seriesLookup[key][t]) {
+              row.push(seriesLookup[key][t].value);
+              row.push(seriesLookup[key][t].tooltip);
+            } else {
+              row.push(null);
+              row.push(null);
+            }
+          });
+          return row;
+        });
+        dataTable.addRows(rows);
+        return { dataTable, seriesKeys, times };
+      }
+
+      // Draw the chart using Google Charts ScatterChart.
+      function drawChart(dataTable, seriesKeys) {
+        // Prepare series options based on team and category.
+        // For each series key (format: team_category), set color and marker shape.
+        const seriesOptions = {};
+        seriesKeys.forEach((key, index) => {
+          // Determine team and category from key.
+          const parts = key.split("_");
+          const team = parts[0];
+          const category = parts[1];
+          const color = teamColors[team] || "black";
+          let pointShape = "circle";
+          const seriesOpts = {
+            color: color,
+            pointSize: 10,
+          };
+          if (category === "guard") {
+            pointShape = "square";
+          } else if (category === "strike") {
+            pointShape = "triangle";
+          } else if (category === "knockdown") {
+            // For knockdown, use a triangle with white fill and colored outline.
+            pointShape = "triangle";
+            seriesOpts.pointFillColor = "white";
+            seriesOpts.pointStrokeColor = color;
+            seriesOpts.pointStrokeWidth = 2;
+          }
+          seriesOpts.pointShape = pointShape;
+          // In our data table, the first column is Time.
+          // Series columns start at index 1 and each series occupies two columns (value and tooltip).
+          // So the series index for Google Charts will be:
+          const seriesIndex = index;
+          seriesOptions[seriesIndex] = seriesOpts;
+        });
+
+        const options = {
+          title: "Damage Over Time",
+          hAxis: { title: "Time (s)" },
+          vAxis: { title: "Damage Amount" },
+          tooltip: { isHtml: true },
+          pointSize: 10,
+          series: seriesOptions,
+          legend: "right",
+        };
+
+        const chart = new google.visualization.ScatterChart(
+          document.getElementById("chart_div")
+        );
+        chart.draw(dataTable, options);
+      }
+
+      // Handler for file selection.
+      function handleFileSelect(evt) {
+        const file = evt.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const text = e.target.result;
+          const dataPoints = parseLog(text);
+          if (dataPoints.length === 0) {
+            alert("No valid damage data found in the log file.");
+            return;
+          }
+          const seriesData = groupData(dataPoints);
+          const { dataTable, seriesKeys } = buildDataTable(seriesData);
+          drawChart(dataTable, seriesKeys);
+        };
+        reader.readAsText(file);
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Damage Log Visualizer</h1>
+    <div id="controls">
+      <input type="file" id="fileInput" accept=".txt" />
+    </div>
+    <div id="chart_div"></div>
+  </body>
+</html>
