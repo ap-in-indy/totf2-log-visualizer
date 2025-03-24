@@ -9,16 +9,20 @@ If you are on Mac OS (depending on versions) you may need to sync files to your 
 
 For running the Python visualizer:
 
+```bash
 python3
 python -m ensurepip --upgrade
 pip install pandas
-pip instlal matplotlib
+pip install matplotlib
 python3 visualizer.py
+```
 
 Or condas for virtual environment management:
 
+```bash
 conda create --name thrillofthefight
 conda activate thrillofthefight
 conda install pandas
 conda install matplotlib
 python3 visualizer.py
+```
