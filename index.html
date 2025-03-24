@@ -11,28 +11,39 @@
       }
       h1 {
         text-align: center;
+        margin-bottom: 20px;
       }
       #controls {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+      }
+      #filters {
+        text-align: center;
+        margin-bottom: 10px;
       }
       #chart_div {
         width: 100%;
-        height: 500px;
+        height: 400px;
+        margin-bottom: 10px;
+        margin: 0 auto;
       }
       #summaryTotals {
-        margin-top: 20px;
         text-align: center;
+        margin-top: 20px;
       }
       button {
         margin: 0 5px;
         padding: 5px 10px;
         font-size: 1rem;
       }
+      label {
+        margin: 0 10px;
+        font-size: 1rem;
+      }
     </style>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
-      // Load the Google Charts package
+      // Load the Google Charts package.
       google.charts.load("current", { packages: ["corechart"] });
       google.charts.setOnLoadCallback(init);
 
@@ -42,16 +53,35 @@
         PlayerBlue: "blue",
       };
 
-      let currentMatchData = []; // Array of matches. Each match is an array of events.
+      let currentMatchData = []; // Array of matches; each match is an array of events.
       let matchIndex = 0;
       let currentDataTable = null;
       let currentSeriesKeys = null;
 
+      // When filters change, re-draw the current match.
+      function attachFilterListeners() {
+        document
+          .querySelectorAll('input[name="filter"]')
+          .forEach((checkbox) => {
+            checkbox.addEventListener("change", () => {
+              // Re-display current match using filters.
+              displayMatchData(currentMatchData[matchIndex]);
+            });
+          });
+      }
+
       function init() {
-        document.getElementById("fileInput").addEventListener("change", handleFileSelect, false);
-        document.getElementById("nextButton").addEventListener("click", showNextMatch);
-        document.getElementById("prevButton").addEventListener("click", showPrevMatch);
+        document
+          .getElementById("fileInput")
+          .addEventListener("change", handleFileSelect, false);
+        document
+          .getElementById("nextButton")
+          .addEventListener("click", showNextMatch);
+        document
+          .getElementById("prevButton")
+          .addEventListener("click", showPrevMatch);
         window.addEventListener("resize", onWindowResize);
+        attachFilterListeners();
       }
 
       // Parse the log file text into matches.
@@ -63,8 +93,10 @@
         let matchActive = false;
 
         // Regular expressions for send and receive lines.
-        const sendRegex = /\[(.*?)\].*Match damage send: Id: \d+ Type: (\w+) type: (\w+) region: (\w+) movement: (\w*) weakPoint: (\w*) amount: ([\d.]+).*closest neutral corner: (\w+)/;
-        const receiveRegex = /\[(.*?)\].*Match damage received: Id: \d+ Type: (\w+), type: (\w+) region: (\w+) weakPoint: (\w*) movementType: (\w*) amount: ([\d.]+)/;
+        const sendRegex =
+          /\[(.*?)\].*Match damage send: Id: \d+ Type: (\w+) type: (\w+) region: (\w+) movement: (\w*) weakPoint: (\w*) amount: ([\d.]+).*closest neutral corner: (\w+)/;
+        const receiveRegex =
+          /\[(.*?)\].*Match damage received: Id: \d+ Type: (\w+), type: (\w+) region: (\w+) weakPoint: (\w*) movementType: (\w*) amount: ([\d.]+)/;
         const resultsRegex = /Match Results:/;
 
         // Helper: Convert HH:MM:SS.mmm to seconds.
@@ -78,7 +110,6 @@
           return hours * 3600 + minutes * 60 + seconds + millis / 1000;
         }
 
-        // Process each line.
         let firstTimeSeconds = null;
         for (const line of lines) {
           let match;
@@ -123,7 +154,7 @@
           // Determine category.
           // "guard": damageType === "None"
           // "strike": damageType === "Hit"
-          // "knockdown": any other damageType (will also flag knockdown in tooltip)
+          // "knockdown": any other damageType.
           let category;
           if (damageType === "None") {
             category = "guard";
@@ -134,14 +165,20 @@
           }
 
           // Build tooltip including knockdown info.
-          const knockdownText = (category === "knockdown") ? "Yes" : "No";
-          const tooltip = 
-            "Time: " + timestamp +
-            "\nTeam: " + team +
-            "\nType: " + damageType +
-            "\nWeakPoint: " + weakPoint +
-            "\nKnockdown: " + knockdownText +
-            "\nAmount: " + amount;
+          const knockdownText = category === "knockdown" ? "Yes" : "No";
+          const tooltip =
+            "Time: " +
+            timestamp +
+            "\nTeam: " +
+            team +
+            "\nType: " +
+            damageType +
+            "\nWeakPoint: " +
+            weakPoint +
+            "\nKnockdown: " +
+            knockdownText +
+            "\nAmount: " +
+            amount;
 
           matchData.push({
             time: timeOffset,
@@ -152,14 +189,27 @@
             weakPoint: weakPoint,
             movement: movement,
             category: category,
-            tooltip: tooltip
+            tooltip: tooltip,
           });
         }
-        // In case the file doesn't end with a "Match Results" line.
         if (matchData.length > 0) {
           matches.push(matchData);
         }
         return matches;
+      }
+
+      // Filter the match data based on current filter selections.
+      function filterMatchData(matchData) {
+        const showGuard = document.getElementById("filterGuard").checked;
+        const showStrike = document.getElementById("filterStrike").checked;
+        const showKnockdown = document.getElementById("filterKnockdown").checked;
+
+        return matchData.filter((pt) => {
+          if (pt.category === "guard" && !showGuard) return false;
+          if (pt.category === "strike" && !showStrike) return false;
+          if (pt.category === "knockdown" && !showKnockdown) return false;
+          return true;
+        });
       }
 
       // Group data points into series based on team and category.
@@ -177,25 +227,20 @@
 
       // Build a data table for Google Charts from the series data.
       function buildDataTable(seriesData) {
-        // Get sorted unique time values.
         const timeSet = new Set();
         for (const key in seriesData) {
           seriesData[key].forEach((pt) => timeSet.add(pt.time));
         }
         const times = Array.from(timeSet).sort((a, b) => a - b);
 
-        // Sorted series keys.
         const seriesKeys = Object.keys(seriesData).sort();
-
         const dataTable = new google.visualization.DataTable();
         dataTable.addColumn("number", "Time (s)");
-        // For each series add a column for value and a tooltip.
         seriesKeys.forEach((key) => {
           dataTable.addColumn("number", key);
           dataTable.addColumn({ type: "string", role: "tooltip", p: { html: true } });
         });
 
-        // Build lookup for series.
         const seriesLookup = {};
         seriesKeys.forEach((key) => {
           seriesLookup[key] = {};
@@ -223,7 +268,6 @@
 
       // Draw the chart using Google Charts ScatterChart.
       function drawChart(dataTable, seriesKeys) {
-        // Prepare series options.
         const seriesOptions = {};
         seriesKeys.forEach((key, index) => {
           const parts = key.split("_");
@@ -233,16 +277,15 @@
           let pointShape = "circle";
           const seriesOpts = {
             color: color,
-            pointSize: 10
+            pointSize: 10,
           };
           if (category === "guard") {
             pointShape = "square";
           } else if (category === "strike") {
             pointShape = "triangle";
           } else if (category === "knockdown") {
-            // For knockdown, use diamond with darker color.
             pointShape = "diamond";
-            color = (team === "PlayerRed") ? "darkred" : "darkblue";
+            color = team === "PlayerRed" ? "darkred" : "darkblue";
             seriesOpts.color = color;
           }
           seriesOpts.pointShape = pointShape;
@@ -253,10 +296,11 @@
           title: "Damage Over Time",
           hAxis: { title: "Time (s)" },
           vAxis: { title: "Damage Amount" },
-          tooltip: { isHtml: true },
+          tooltip: { isHtml: false },
           pointSize: 10,
           series: seriesOptions,
-          legend: "right"
+          legend: { position: "bottom", maxLines: 2 },
+          chartArea: { top: 50, left: 50, width: "80%", height: "70%" },
         };
 
         const chart = new google.visualization.ScatterChart(document.getElementById("chart_div"));
@@ -265,12 +309,14 @@
 
       // Display match data (chart and summary totals).
       function displayMatchData(matchData) {
-        const seriesData = groupData(matchData);
+        // Apply filters.
+        const filteredData = filterMatchData(matchData);
+        const seriesData = groupData(filteredData);
         const { dataTable, seriesKeys } = buildDataTable(seriesData);
         currentDataTable = dataTable;
         currentSeriesKeys = seriesKeys;
         drawChart(dataTable, seriesKeys);
-        displaySummaryTotals(matchData);
+        displaySummaryTotals(filteredData);
       }
 
       // Generate and display summary totals for each team.
@@ -285,8 +331,12 @@
         const summaryDiv = document.getElementById("summaryTotals");
         summaryDiv.innerHTML = `
           <h3>Summary Totals</h3>
-          <p style="color: red;"><strong>Red:</strong> Total Damage: ${summary.PlayerRed.damage.toFixed(2)}, Total Hits: ${summary.PlayerRed.hits}</p>
-          <p style="color: blue;"><strong>Blue:</strong> Total Damage: ${summary.PlayerBlue.damage.toFixed(2)}, Total Hits: ${summary.PlayerBlue.hits}</p>
+          <p style="color: red;"><strong>Red:</strong> Total Damage: ${summary.PlayerRed.damage.toFixed(
+            2
+          )}, Total Hits: ${summary.PlayerRed.hits}</p>
+          <p style="color: blue;"><strong>Blue:</strong> Total Damage: ${summary.PlayerBlue.damage.toFixed(
+            2
+          )}, Total Hits: ${summary.PlayerBlue.hits}</p>
         `;
       }
 
@@ -312,8 +362,9 @@
       }
 
       function updateNavButtons() {
-        document.getElementById("prevButton").disabled = (matchIndex === 0);
-        document.getElementById("nextButton").disabled = (matchIndex === currentMatchData.length - 1);
+        document.getElementById("prevButton").disabled = matchIndex === 0;
+        document.getElementById("nextButton").disabled =
+          matchIndex === currentMatchData.length - 1;
       }
 
       // Redraw the current chart on window resize.
@@ -350,6 +401,20 @@
       <br /><br />
       <button id="prevButton" disabled>Previous Match</button>
       <button id="nextButton" disabled>Next Match</button>
+    </div>
+    <div id="filters">
+      <label>
+        <input type="checkbox" id="filterGuard" name="filter" checked />
+        Guard
+      </label>
+      <label>
+        <input type="checkbox" id="filterStrike" name="filter" checked />
+        Strike
+      </label>
+      <label>
+        <input type="checkbox" id="filterKnockdown" name="filter" checked />
+        Knockdown
+      </label>
     </div>
     <div id="chart_div"></div>
     <div id="summaryTotals"></div>
