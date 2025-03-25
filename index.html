@@ -24,8 +24,7 @@
       #chart_div {
         width: 100%;
         height: 400px;
-        margin-bottom: 10px;
-        margin: 0 auto;
+        margin: 0 auto 10px;
       }
       #summaryTotals {
         text-align: center;
@@ -40,10 +39,22 @@
         margin: 0 10px;
         font-size: 1rem;
       }
+      table {
+        border-collapse: collapse;
+        margin: 0 auto;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 5px 10px;
+      }
+      th {
+        background-color: #f0f0f0;
+      }
     </style>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
-      // Load the Google Charts package.
+      // Load Google Charts
       google.charts.load("current", { packages: ["corechart"] });
       google.charts.setOnLoadCallback(init);
 
@@ -57,17 +68,50 @@
       let matchIndex = 0;
       let currentDataTable = null;
       let currentSeriesKeys = null;
+      let allRegions = new Set(); // All unique regions from the full log (for dynamic filters)
 
-      // When filters change, re-draw the current match.
-      function attachFilterListeners() {
+      // Attach listeners to static filter checkboxes.
+      function attachStaticFilterListeners() {
         document
           .querySelectorAll('input[name="filter"]')
           .forEach((checkbox) => {
             checkbox.addEventListener("change", () => {
-              // Re-display current match using filters.
               displayMatchData(currentMatchData[matchIndex]);
             });
           });
+      }
+
+      // Attach listeners to dynamically generated region checkboxes.
+      function attachRegionFilterListeners() {
+        document
+          .querySelectorAll('input[name="regionFilter"]')
+          .forEach((checkbox) => {
+            checkbox.addEventListener("change", () => {
+              displayMatchData(currentMatchData[matchIndex]);
+            });
+          });
+      }
+
+      // Dynamically generate region filters based on the entire dataset.
+      function generateRegionFilters(matches) {
+        allRegions.clear();
+        matches.forEach(match => {
+          match.forEach(pt => {
+            allRegions.add(pt.region.toLowerCase());
+          });
+        });
+        const container = document.getElementById("regionFilters");
+        container.innerHTML = "<strong>Region Filters:</strong> ";
+        Array.from(allRegions)
+          .sort()
+          .forEach(region => {
+            container.innerHTML += `<label>
+              <input type="checkbox" name="regionFilter" id="filter_${region}" value="${region}" checked />
+              ${region.charAt(0).toUpperCase() + region.slice(1)}
+            </label>`;
+          });
+        // Reattach event listeners for the newly created checkboxes.
+        attachRegionFilterListeners();
       }
 
       function init() {
@@ -81,25 +125,22 @@
           .getElementById("prevButton")
           .addEventListener("click", showPrevMatch);
         window.addEventListener("resize", onWindowResize);
-        attachFilterListeners();
+        attachStaticFilterListeners();
       }
 
       // Parse the log file text into matches.
-      // A match is defined as a series of damage events ending with a "Match Results" line.
       function parseLog(text) {
         const lines = text.split("\n");
         const matches = [];
         let matchData = [];
         let matchActive = false;
 
-        // Regular expressions for send and receive lines.
         const sendRegex =
           /\[(.*?)\].*Match damage send: Id: \d+ Type: (\w+) type: (\w+) region: (\w+) movement: (\w*) weakPoint: (\w*) amount: ([\d.]+).*closest neutral corner: (\w+)/;
         const receiveRegex =
           /\[(.*?)\].*Match damage received: Id: \d+ Type: (\w+), type: (\w+) region: (\w+) weakPoint: (\w*) movementType: (\w*) amount: ([\d.]+)/;
         const resultsRegex = /Match Results:/;
 
-        // Helper: Convert HH:MM:SS.mmm to seconds.
         function timeToSeconds(tStr) {
           const parts = tStr.split(":");
           const hours = parseInt(parts[0], 10);
@@ -133,7 +174,6 @@
             movement = match[6];
             amount = parseFloat(match[7]);
           } else if (resultsRegex.test(line)) {
-            // End of current match.
             if (matchActive && matchData.length > 0) {
               matches.push(matchData);
               matchData = [];
@@ -141,20 +181,13 @@
             matchActive = false;
             continue;
           } else {
-            continue; // Skip lines that don't match.
+            continue;
           }
-
-          // Convert timestamp to seconds offset.
           const tSeconds = timeToSeconds(timestamp);
           if (firstTimeSeconds === null) {
             firstTimeSeconds = tSeconds;
           }
           const timeOffset = tSeconds - firstTimeSeconds;
-
-          // Determine category.
-          // "guard": damageType === "None"
-          // "strike": damageType === "Hit"
-          // "knockdown": any other damageType.
           let category;
           if (damageType === "None") {
             category = "guard";
@@ -163,8 +196,6 @@
           } else {
             category = "knockdown";
           }
-
-          // Build tooltip including knockdown info.
           const knockdownText = category === "knockdown" ? "Yes" : "No";
           const tooltip =
             "Time: " +
@@ -173,13 +204,14 @@
             team +
             "\nType: " +
             damageType +
+            "\nRegion: " +
+            region +
             "\nWeakPoint: " +
             weakPoint +
             "\nKnockdown: " +
             knockdownText +
             "\nAmount: " +
             amount;
-
           matchData.push({
             time: timeOffset,
             amount: amount,
@@ -198,21 +230,28 @@
         return matches;
       }
 
-      // Filter the match data based on current filter selections.
+      // Filter match data based on type and dynamic region filters.
       function filterMatchData(matchData) {
         const showGuard = document.getElementById("filterGuard").checked;
         const showStrike = document.getElementById("filterStrike").checked;
         const showKnockdown = document.getElementById("filterKnockdown").checked;
-
+        const regionCheckboxes = document.querySelectorAll('input[name="regionFilter"]');
+        const selectedRegions = new Set();
+        regionCheckboxes.forEach((cb) => {
+          if (cb.checked) {
+            selectedRegions.add(cb.value);
+          }
+        });
         return matchData.filter((pt) => {
           if (pt.category === "guard" && !showGuard) return false;
           if (pt.category === "strike" && !showStrike) return false;
           if (pt.category === "knockdown" && !showKnockdown) return false;
+          if (!selectedRegions.has(pt.region.toLowerCase())) return false;
           return true;
         });
       }
 
-      // Group data points into series based on team and category.
+      // Group data points by team and category.
       function groupData(dataPoints) {
         const seriesData = {};
         dataPoints.forEach((pt) => {
@@ -225,14 +264,13 @@
         return seriesData;
       }
 
-      // Build a data table for Google Charts from the series data.
+      // Build the data table for Google Charts.
       function buildDataTable(seriesData) {
         const timeSet = new Set();
         for (const key in seriesData) {
           seriesData[key].forEach((pt) => timeSet.add(pt.time));
         }
         const times = Array.from(timeSet).sort((a, b) => a - b);
-
         const seriesKeys = Object.keys(seriesData).sort();
         const dataTable = new google.visualization.DataTable();
         dataTable.addColumn("number", "Time (s)");
@@ -240,7 +278,6 @@
           dataTable.addColumn("number", key);
           dataTable.addColumn({ type: "string", role: "tooltip", p: { html: true } });
         });
-
         const seriesLookup = {};
         seriesKeys.forEach((key) => {
           seriesLookup[key] = {};
@@ -248,7 +285,6 @@
             seriesLookup[key][pt.time] = { value: pt.amount, tooltip: pt.tooltip };
           });
         });
-
         const rows = times.map((t) => {
           const row = [t];
           seriesKeys.forEach((key) => {
@@ -266,7 +302,7 @@
         return { dataTable, seriesKeys, times };
       }
 
-      // Draw the chart using Google Charts ScatterChart.
+      // Draw the chart.
       function drawChart(dataTable, seriesKeys) {
         const seriesOptions = {};
         seriesKeys.forEach((key, index) => {
@@ -275,10 +311,7 @@
           const category = parts[1];
           let color = teamColors[team] || "black";
           let pointShape = "circle";
-          const seriesOpts = {
-            color: color,
-            pointSize: 10,
-          };
+          const seriesOpts = { color: color, pointSize: 10 };
           if (category === "guard") {
             pointShape = "square";
           } else if (category === "strike") {
@@ -291,7 +324,6 @@
           seriesOpts.pointShape = pointShape;
           seriesOptions[index] = seriesOpts;
         });
-
         const options = {
           title: "Damage Over Time",
           hAxis: { title: "Time (s)" },
@@ -302,14 +334,14 @@
           legend: { position: "bottom", maxLines: 2 },
           chartArea: { top: 50, left: 50, width: "80%", height: "70%" },
         };
-
-        const chart = new google.visualization.ScatterChart(document.getElementById("chart_div"));
+        const chart = new google.visualization.ScatterChart(
+          document.getElementById("chart_div")
+        );
         chart.draw(dataTable, options);
       }
 
-      // Display match data (chart and summary totals).
+      // Display match data (chart and summary) using filtered data.
       function displayMatchData(matchData) {
-        // Apply filters.
         const filteredData = filterMatchData(matchData);
         const seriesData = groupData(filteredData);
         const { dataTable, seriesKeys } = buildDataTable(seriesData);
@@ -319,28 +351,69 @@
         displaySummaryTotals(filteredData);
       }
 
-      // Generate and display summary totals for each team.
+      // Build and display the advanced summary table dynamically.
       function displaySummaryTotals(matchData) {
-        let summary = { PlayerRed: { damage: 0, hits: 0 }, PlayerBlue: { damage: 0, hits: 0 } };
+        const summary = {
+          PlayerRed: { punches: 0, hits: 0, damage: 0, regions: {} },
+          PlayerBlue: { punches: 0, hits: 0, damage: 0, regions: {} },
+        };
+        const uniqueRegions = new Set();
         matchData.forEach((pt) => {
           if (pt.team === "PlayerRed" || pt.team === "PlayerBlue") {
+            summary[pt.team].punches += 1;
             summary[pt.team].damage += pt.amount;
-            summary[pt.team].hits += 1;
+            if (pt.damageType !== "None") summary[pt.team].hits += 1;
+            const reg = pt.region.toLowerCase();
+            uniqueRegions.add(reg);
+            if (!summary[pt.team].regions[reg]) summary[pt.team].regions[reg] = 0;
+            summary[pt.team].regions[reg] += 1;
           }
         });
-        const summaryDiv = document.getElementById("summaryTotals");
-        summaryDiv.innerHTML = `
-          <h3>Summary Totals</h3>
-          <p style="color: red;"><strong>Red:</strong> Total Damage: ${summary.PlayerRed.damage.toFixed(
-            2
-          )}, Total Hits: ${summary.PlayerRed.hits}</p>
-          <p style="color: blue;"><strong>Blue:</strong> Total Damage: ${summary.PlayerBlue.damage.toFixed(
-            2
-          )}, Total Hits: ${summary.PlayerBlue.hits}</p>
-        `;
+        let html = `<h3>Basic Summary Totals</h3>`;
+        html += `<p style="color: red;"><strong>Red:</strong> Total Damage: ${summary.PlayerRed.damage.toFixed(
+          2
+        )}, Total Hits: ${summary.PlayerRed.hits}</p>`;
+        html += `<p style="color: blue;"><strong>Blue:</strong> Total Damage: ${summary.PlayerBlue.damage.toFixed(
+          2
+        )}, Total Hits: ${summary.PlayerBlue.hits}</p>`;
+        html += `<h3>Advanced Summary</h3>`;
+        html += `<table cellpadding="5" cellspacing="0">
+                  <tr>
+                    <th>Player</th>
+                    <th>Total Punches</th>
+                    <th>Total Hits</th>`;
+        Array.from(uniqueRegions)
+          .sort()
+          .forEach((reg) => {
+            html += `<th>${reg.charAt(0).toUpperCase() + reg.slice(1)}</th>`;
+          });
+        html += `<th>Total Damage</th>
+                 <th>Land %</th>
+                 </tr>`;
+        for (const team in summary) {
+          let s = summary[team];
+          let landPercent =
+            s.punches > 0 ? ((s.hits / s.punches) * 100).toFixed(1) : "0.0";
+          let color = team === "PlayerRed" ? "red" : "blue";
+          html += `<tr>
+                      <td style="color:${color}; font-weight:bold;">${team}</td>
+                      <td>${s.punches}</td>
+                      <td>${s.hits}</td>`;
+          Array.from(uniqueRegions)
+            .sort()
+            .forEach((reg) => {
+              let count = s.regions[reg] || 0;
+              html += `<td>${count}</td>`;
+            });
+          html += `<td>${s.damage.toFixed(2)}</td>
+                   <td>${landPercent}%</td>
+                   </tr>`;
+        }
+        html += `</table>`;
+        document.getElementById("summaryTotals").innerHTML = html;
       }
 
-      // Event handlers for navigation.
+      // Navigation handlers.
       function showNextMatch() {
         if (matchIndex < currentMatchData.length - 1) {
           matchIndex++;
@@ -367,14 +440,13 @@
           matchIndex === currentMatchData.length - 1;
       }
 
-      // Redraw the current chart on window resize.
       function onWindowResize() {
         if (currentDataTable && currentSeriesKeys) {
           drawChart(currentDataTable, currentSeriesKeys);
         }
       }
 
-      // Handler for file selection.
+      // File selection handler.
       function handleFileSelect(evt) {
         const file = evt.target.files[0];
         if (!file) return;
@@ -383,6 +455,7 @@
           const text = e.target.result;
           currentMatchData = parseLog(text);
           if (currentMatchData.length > 0) {
+            generateRegionFilters(currentMatchData);
             matchIndex = 0;
             displayMatchData(currentMatchData[matchIndex]);
             updateNavButtons();
@@ -403,6 +476,7 @@
       <button id="nextButton" disabled>Next Match</button>
     </div>
     <div id="filters">
+      <!-- Static type filters -->
       <label>
         <input type="checkbox" id="filterGuard" name="filter" checked />
         Guard
@@ -415,6 +489,8 @@
         <input type="checkbox" id="filterKnockdown" name="filter" checked />
         Knockdown
       </label>
+      <!-- Dynamic region filters will be injected here -->
+      <div id="regionFilters"></div>
     </div>
     <div id="chart_div"></div>
     <div id="summaryTotals"></div>
