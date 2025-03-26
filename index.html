@@ -1,591 +1,617 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Damage Log Visualizer</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-      }
-      h1 {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-      #controls {
-        text-align: center;
-        margin-bottom: 10px;
-      }
-      #filters {
-        text-align: center;
-        margin-bottom: 10px;
-      }
-      #chart_div {
-        width: 100%;
-        height: 400px;
-        margin: 0 auto 10px;
-      }
-      #summaryTotals {
-        text-align: center;
-        margin-top: 20px;
-      }
-      button {
-        margin: 0 5px;
-        padding: 5px 10px;
-        font-size: 1rem;
-      }
-      label {
-        margin: 0 10px;
-        font-size: 1rem;
-      }
-      table {
-        border-collapse: collapse;
-        margin: 0 auto;
-      }
-      th,
-      td {
-        border: 1px solid #ccc;
-        padding: 5px 10px;
-      }
-      th {
-        background-color: #f0f0f0;
-      }
-    </style>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script>
-      // Load Google Charts.
-      google.charts.load("current", { packages: ["corechart"] });
-      google.charts.setOnLoadCallback(init);
 
-      // Map team names to colors.
-      const teamColors = {
-        PlayerRed: "red",
-        PlayerBlue: "blue",
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Damage Log Visualizer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #controls,
+    #filters {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    #chart_div {
+      width: 100%;
+      height: 400px;
+      margin: 0 auto 10px;
+    }
+
+    #summaryContainer {
+      max-width: 100%;
+      overflow-y: auto;
+      /* Vertical scrolling if needed */
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    #summaryTotals table {
+      width: auto;
+      max-width: 1200px;
+      /* Adjust as needed */
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+
+    #summaryTotals th,
+    #summaryTotals td {
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      text-align: center;
+    }
+
+    #summaryTotals th {
+      background-color: #f0f0f0;
+    }
+
+    #summaryTotals {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      font-size: 1rem;
+    }
+
+    label {
+      margin: 0 10px;
+      font-size: 1rem;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 0 auto;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+    }
+
+    th {
+      background-color: #f0f0f0;
+    }
+  </style>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    // Load Google Charts.
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(init);
+
+    // Map team names to colors.
+    const teamColors = {
+      PlayerRed: "red",
+      PlayerBlue: "blue",
+    };
+
+    let currentMatchData = []; // Array of matches; each match is an array of events.
+    let matchIndex = 0;
+    let currentDataTable = null;
+    let currentSeriesKeys = null;
+    let allRegions = new Set(); // For dynamic region filters.
+    let allMovements = new Set(); // For dynamic movement filters.
+    let allWeakPoints = new Set(); // For dynamic weak point filters.
+
+    // Attach listeners to static type filters.
+    function attachStaticFilterListeners() {
+      document.querySelectorAll('input[name="filter"]').forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+          displayMatchData(currentMatchData[matchIndex]);
+        });
+      });
+    }
+
+    // Attach listeners to dynamically generated region checkboxes.
+    function attachRegionFilterListeners() {
+      document.querySelectorAll('input[name="regionFilter"]').forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+          displayMatchData(currentMatchData[matchIndex]);
+        });
+      });
+    }
+
+    // Attach listeners to dynamically generated movement checkboxes.
+    function attachMovementFilterListeners() {
+      document.querySelectorAll('input[name="movementFilter"]').forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+          displayMatchData(currentMatchData[matchIndex]);
+        });
+      });
+    }
+
+    // Attach listeners to dynamically generated weak point checkboxes.
+    function attachWeakPointFilterListeners() {
+      document.querySelectorAll('input[name="weakPointFilter"]').forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+          displayMatchData(currentMatchData[matchIndex]);
+        });
+      });
+    }
+
+    // Dynamically generate region filters.
+    function generateRegionFilters(matches) {
+      allRegions.clear();
+      matches.forEach(match => {
+        match.forEach(pt => {
+          allRegions.add(pt.region.toLowerCase());
+        });
+      });
+      const container = document.getElementById("regionFilters");
+      container.innerHTML = "<strong>Region Filters:</strong> ";
+      Array.from(allRegions).sort().forEach(region => {
+        container.innerHTML += `<label>
+            <input type="checkbox" name="regionFilter" value="${region}" checked />
+            ${region.charAt(0).toUpperCase() + region.slice(1)}
+          </label>`;
+      });
+      attachRegionFilterListeners();
+    }
+
+    // Dynamically generate movement filters.
+    function generateMovementFilters(matches) {
+      allMovements.clear();
+      matches.forEach(match => {
+        match.forEach(pt => {
+          if (pt.movement) {
+            allMovements.add(pt.movement.toLowerCase());
+          }
+        });
+      });
+      const container = document.getElementById("movementFilters");
+      container.innerHTML = "<strong>Movement Filters:</strong> ";
+      Array.from(allMovements).sort().forEach(mov => {
+        container.innerHTML += `<label>
+            <input type="checkbox" name="movementFilter" value="${mov}" checked />
+            ${mov.charAt(0).toUpperCase() + mov.slice(1)}
+          </label>`;
+      });
+      attachMovementFilterListeners();
+    }
+
+    // Dynamically generate weak point filters.
+    function generateWeakPointFilters(matches) {
+      allWeakPoints.clear();
+      matches.forEach(match => {
+        match.forEach(pt => {
+          if (pt.weakPoint && pt.weakPoint.toLowerCase() !== "none") {
+            allWeakPoints.add(pt.weakPoint.toLowerCase());
+          }
+        });
+      });
+      const container = document.getElementById("weakPointFilters");
+      container.innerHTML = "<strong>Weak Point Filters:</strong> ";
+      Array.from(allWeakPoints).sort().forEach(wp => {
+        container.innerHTML += `<label>
+            <input type="checkbox" name="weakPointFilter" value="${wp}" checked />
+            ${wp.charAt(0).toUpperCase() + wp.slice(1)}
+          </label>`;
+      });
+      attachWeakPointFilterListeners();
+    }
+
+    function init() {
+      document.getElementById("fileInput").addEventListener("change", handleFileSelect, false);
+      document.getElementById("nextButton").addEventListener("click", showNextMatch);
+      document.getElementById("prevButton").addEventListener("click", showPrevMatch);
+      window.addEventListener("resize", onWindowResize);
+      attachStaticFilterListeners();
+    }
+
+    // Parse the log file into matches.
+    function parseLog(text) {
+      const lines = text.split("\n");
+      const matches = [];
+      let matchData = [];
+      let matchActive = false;
+      const sendRegex = /\[(.*?)\].*Match damage send: Id: \d+ Type: (\w+) type: (\w+) region: (\w+) movement: (\w*) weakPoint: (\w*) amount: ([\d.]+).*closest neutral corner: (\w+)/;
+      const receiveRegex = /\[(.*?)\].*Match damage received: Id: \d+ Type: (\w+), type: (\w+) region: (\w+) weakPoint: (\w*) movementType: (\w*) amount: ([\d.]+)/;
+      const resultsRegex = /Match Results:/;
+      function timeToSeconds(tStr) {
+        const parts = tStr.split(":");
+        const hours = parseInt(parts[0], 10);
+        const minutes = parseInt(parts[1], 10);
+        const secParts = parts[2].split(".");
+        const seconds = parseInt(secParts[0], 10);
+        const millis = parseInt(secParts[1] || "0", 10);
+        return hours * 3600 + minutes * 60 + seconds + millis / 1000;
+      }
+      let firstTimeSeconds = null;
+      for (const line of lines) {
+        let match;
+        let timestamp, team, damageType, region, weakPoint, movement, amount;
+        if ((match = sendRegex.exec(line))) {
+          matchActive = true;
+          timestamp = match[1];
+          team = match[2];
+          damageType = match[3];
+          region = match[4];
+          movement = match[5]; // "movement" for send logs.
+          weakPoint = match[6] || "None";
+          amount = parseFloat(match[7]);
+        } else if ((match = receiveRegex.exec(line))) {
+          matchActive = true;
+          timestamp = match[1];
+          team = match[2];
+          damageType = match[3];
+          region = match[4];
+          weakPoint = match[5] || "None";
+          movement = match[6]; // "movementType" for receive logs.
+          amount = parseFloat(match[7]);
+        } else if (resultsRegex.test(line)) {
+          if (matchActive && matchData.length > 0) {
+            matches.push(matchData);
+            matchData = [];
+          }
+          matchActive = false;
+          continue;
+        } else {
+          continue;
+        }
+        const tSeconds = timeToSeconds(timestamp);
+        if (firstTimeSeconds === null) {
+          firstTimeSeconds = tSeconds;
+        }
+        const timeOffset = tSeconds - firstTimeSeconds;
+        let category;
+        if (damageType === "None") {
+          category = "guard";
+        } else if (damageType === "Hit") {
+          category = "strike";
+        } else {
+          category = "knockdown";
+        }
+        const knockdownText = category === "knockdown" ? "Yes" : "No";
+        // Tooltip now includes the movement field.
+        const tooltip = "Time: " + timestamp +
+          "\nTeam: " + team +
+          "\nType: " + damageType +
+          "\nRegion: " + region +
+          "\nWeakPoint: " + weakPoint +
+          "\nKnockdown: " + knockdownText +
+          "\nMovement: " + movement +
+          "\nAmount: " + amount;
+        matchData.push({
+          time: timeOffset,
+          amount: amount,
+          team: team,
+          damageType: damageType,
+          region: region,
+          weakPoint: weakPoint,
+          movement: movement,
+          category: category,
+          tooltip: tooltip,
+        });
+      }
+      if (matchData.length > 0) {
+        matches.push(matchData);
+      }
+      return matches;
+    }
+
+    // Filter match data based on type, region, movement, and weak point filters.
+    function filterMatchData(matchData) {
+      const showGuard = document.getElementById("filterGuard").checked;
+      const showStrike = document.getElementById("filterStrike").checked;
+      const showKnockdown = document.getElementById("filterKnockdown").checked;
+      const regionCheckboxes = document.querySelectorAll('input[name="regionFilter"]');
+      const selectedRegions = new Set();
+      regionCheckboxes.forEach((cb) => {
+        if (cb.checked) selectedRegions.add(cb.value);
+      });
+      const movementCheckboxes = document.querySelectorAll('input[name="movementFilter"]');
+      const selectedMovements = new Set();
+      movementCheckboxes.forEach((cb) => {
+        if (cb.checked) selectedMovements.add(cb.value);
+      });
+      const weakPointCheckboxes = document.querySelectorAll('input[name="weakPointFilter"]');
+      const selectedWeakPoints = new Set();
+      weakPointCheckboxes.forEach((cb) => {
+        if (cb.checked) selectedWeakPoints.add(cb.value);
+      });
+      return matchData.filter((pt) => {
+        if (pt.category === "guard" && !showGuard) return false;
+        if (pt.category === "strike" && !showStrike) return false;
+        if (pt.category === "knockdown" && !showKnockdown) return false;
+        if (!selectedRegions.has(pt.region.toLowerCase())) return false;
+        if (pt.movement && !selectedMovements.has(pt.movement.toLowerCase())) return false;
+        // For weak points: if weakPoint is not "none", then it must be selected.
+        if (pt.weakPoint.toLowerCase() !== "none" && !selectedWeakPoints.has(pt.weakPoint.toLowerCase())) return false;
+        return true;
+      });
+    }
+
+    // Group data points by team and category.
+    function groupData(dataPoints) {
+      const seriesData = {};
+      dataPoints.forEach((pt) => {
+        const key = pt.team + "_" + pt.category;
+        if (!seriesData[key]) seriesData[key] = [];
+        seriesData[key].push(pt);
+      });
+      return seriesData;
+    }
+
+    // Build the data table for Google Charts.
+    function buildDataTable(seriesData) {
+      const timeSet = new Set();
+      for (const key in seriesData) {
+        seriesData[key].forEach(pt => timeSet.add(pt.time));
+      }
+      const times = Array.from(timeSet).sort((a, b) => a - b);
+      const seriesKeys = Object.keys(seriesData).sort();
+      const dataTable = new google.visualization.DataTable();
+      dataTable.addColumn("number", "Time (s)");
+      seriesKeys.forEach(key => {
+        dataTable.addColumn("number", key);
+        dataTable.addColumn({ type: "string", role: "tooltip", p: { html: true } });
+      });
+      const seriesLookup = {};
+      seriesKeys.forEach(key => {
+        seriesLookup[key] = {};
+        seriesData[key].forEach(pt => {
+          seriesLookup[key][pt.time] = { value: pt.amount, tooltip: pt.tooltip };
+        });
+      });
+      const rows = times.map(t => {
+        const row = [t];
+        seriesKeys.forEach(key => {
+          if (seriesLookup[key][t]) {
+            row.push(seriesLookup[key][t].value);
+            row.push(seriesLookup[key][t].tooltip);
+          } else {
+            row.push(null); row.push(null);
+          }
+        });
+        return row;
+      });
+      dataTable.addRows(rows);
+      return { dataTable, seriesKeys, times };
+    }
+
+    // Draw the chart.
+    function drawChart(dataTable, seriesKeys) {
+      const seriesOptions = {};
+      seriesKeys.forEach((key, index) => {
+        const parts = key.split("_");
+        const team = parts[0];
+        const category = parts[1];
+        let color = teamColors[team] || "black";
+        let pointShape = "circle";
+        const seriesOpts = { color: color, pointSize: 10 };
+        if (category === "guard") {
+          pointShape = "square";
+        } else if (category === "strike") {
+          pointShape = "triangle";
+        } else if (category === "knockdown") {
+          pointShape = "diamond";
+          color = team === "PlayerRed" ? "darkred" : "darkblue";
+          seriesOpts.color = color;
+        }
+        seriesOpts.pointShape = pointShape;
+        seriesOptions[index] = seriesOpts;
+      });
+      const options = {
+        title: "Damage Over Time",
+        hAxis: { title: "Time (s)" },
+        vAxis: { title: "Damage Amount" },
+        tooltip: { isHtml: false },
+        pointSize: 10,
+        series: seriesOptions,
+        legend: { position: "bottom", maxLines: 2 },
+        chartArea: { top: 50, left: 50, width: "80%", height: "70%" }
+      };
+      const chart = new google.visualization.ScatterChart(document.getElementById("chart_div"));
+      chart.draw(dataTable, options);
+    }
+
+    // Display match data (chart and advanced summary) using filtered data.
+    function displayMatchData(matchData) {
+      const filteredData = filterMatchData(matchData);
+      const seriesData = groupData(filteredData);
+      const { dataTable, seriesKeys } = buildDataTable(seriesData);
+      currentDataTable = dataTable;
+      currentSeriesKeys = seriesKeys;
+      drawChart(dataTable, seriesKeys);
+      displaySummaryTotals(filteredData);
+    }
+
+    // Build and display the advanced summary table dynamically.
+    function displaySummaryTotals(filteredEvents) {
+      // Compute summary per player from filtered events.
+      const summary = {
+        PlayerRed: { punches: 0, hits: 0, damage: 0, regions: {}, movements: {}, weakPoints: {} },
+        PlayerBlue: { punches: 0, hits: 0, damage: 0, regions: {}, movements: {}, weakPoints: {} }
       };
 
-      let currentMatchData = []; // Array of matches; each match is an array of events.
-      let matchIndex = 0;
-      let currentDataTable = null;
-      let currentSeriesKeys = null;
-      let allRegions = new Set(); // For dynamic region filters
-      let allMovements = new Set(); // For dynamic movement filters
-      let allWeakPoints = new Set(); // For dynamic weak point filters
-
-      // Attach listeners to static filter checkboxes.
-      function attachStaticFilterListeners() {
-        document
-          .querySelectorAll('input[name="filter"]')
-          .forEach((checkbox) => {
-            checkbox.addEventListener("change", () => {
-              displayMatchData(currentMatchData[matchIndex]);
-            });
-          });
-      }
-
-      // Attach listeners to dynamically generated region checkboxes.
-      function attachRegionFilterListeners() {
-        document
-          .querySelectorAll('input[name="regionFilter"]')
-          .forEach((checkbox) => {
-            checkbox.addEventListener("change", () => {
-              displayMatchData(currentMatchData[matchIndex]);
-            });
-          });
-      }
-
-      // Attach listeners to dynamically generated movement checkboxes.
-      function attachMovementFilterListeners() {
-        document
-          .querySelectorAll('input[name="movementFilter"]')
-          .forEach((checkbox) => {
-            checkbox.addEventListener("change", () => {
-              displayMatchData(currentMatchData[matchIndex]);
-            });
-          });
-      }
-
-      // Attach listeners to dynamically generated weak point checkboxes.
-      function attachWeakPointFilterListeners() {
-        document
-          .querySelectorAll('input[name="weakPointFilter"]')
-          .forEach((checkbox) => {
-            checkbox.addEventListener("change", () => {
-              displayMatchData(currentMatchData[matchIndex]);
-            });
-          });
-      }
-
-      // Generate dynamic region filters.
-      function generateRegionFilters(matches) {
-        allRegions.clear();
-        matches.forEach(match => {
-          match.forEach(pt => {
-            allRegions.add(pt.region.toLowerCase());
-          });
-        });
-        const container = document.getElementById("regionFilters");
-        container.innerHTML = "<strong>Region Filters:</strong> ";
-        Array.from(allRegions)
-          .sort()
-          .forEach(region => {
-            container.innerHTML += `<label>
-              <input type="checkbox" name="regionFilter" value="${region}" checked />
-              ${region.charAt(0).toUpperCase() + region.slice(1)}
-            </label>`;
-          });
-        attachRegionFilterListeners();
-      }
-
-      // Generate dynamic movement filters.
-      function generateMovementFilters(matches) {
-        allMovements.clear();
-        matches.forEach(match => {
-          match.forEach(pt => {
-            if (pt.movement) {
-              allMovements.add(pt.movement.toLowerCase());
-            }
-          });
-        });
-        const container = document.getElementById("movementFilters");
-        container.innerHTML = "<strong>Movement Filters:</strong> ";
-        Array.from(allMovements)
-          .sort()
-          .forEach(mov => {
-            container.innerHTML += `<label>
-              <input type="checkbox" name="movementFilter" value="${mov}" checked />
-              ${mov.charAt(0).toUpperCase() + mov.slice(1)}
-            </label>`;
-          });
-        attachMovementFilterListeners();
-      }
-
-      // Generate dynamic weak point filters.
-      function generateWeakPointFilters(matches) {
-        allWeakPoints.clear();
-        matches.forEach(match => {
-          match.forEach(pt => {
-            if (pt.weakPoint && pt.weakPoint.toLowerCase() !== "none") {
-              allWeakPoints.add(pt.weakPoint.toLowerCase());
-            }
-          });
-        });
-        const container = document.getElementById("weakPointFilters");
-        container.innerHTML = "<strong>Weak Point Filters:</strong> ";
-        Array.from(allWeakPoints)
-          .sort()
-          .forEach(wp => {
-            container.innerHTML += `<label>
-              <input type="checkbox" name="weakPointFilter" value="${wp}" checked />
-              ${wp.charAt(0).toUpperCase() + wp.slice(1)}
-            </label>`;
-          });
-        attachWeakPointFilterListeners();
-      }
-
-      function init() {
-        document
-          .getElementById("fileInput")
-          .addEventListener("change", handleFileSelect, false);
-        document
-          .getElementById("nextButton")
-          .addEventListener("click", showNextMatch);
-        document
-          .getElementById("prevButton")
-          .addEventListener("click", showPrevMatch);
-        window.addEventListener("resize", onWindowResize);
-        attachStaticFilterListeners();
-      }
-
-      // Parse the log file into matches.
-      function parseLog(text) {
-        const lines = text.split("\n");
-        const matches = [];
-        let matchData = [];
-        let matchActive = false;
-
-        const sendRegex =
-          /\[(.*?)\].*Match damage send: Id: \d+ Type: (\w+) type: (\w+) region: (\w+) movement: (\w*) weakPoint: (\w*) amount: ([\d.]+).*closest neutral corner: (\w+)/;
-        const receiveRegex =
-          /\[(.*?)\].*Match damage received: Id: \d+ Type: (\w+), type: (\w+) region: (\w+) weakPoint: (\w*) movementType: (\w*) amount: ([\d.]+)/;
-        const resultsRegex = /Match Results:/;
-
-        function timeToSeconds(tStr) {
-          const parts = tStr.split(":");
-          const hours = parseInt(parts[0], 10);
-          const minutes = parseInt(parts[1], 10);
-          const secParts = parts[2].split(".");
-          const seconds = parseInt(secParts[0], 10);
-          const millis = parseInt(secParts[1] || "0", 10);
-          return hours * 3600 + minutes * 60 + seconds + millis / 1000;
+      filteredEvents.forEach(pt => {
+        if (pt.team === "PlayerRed" || pt.team === "PlayerBlue") {
+          const team = pt.team;
+          summary[team].punches += 1;
+          summary[team].damage += pt.amount;
+          if (pt.damageType !== "None") summary[team].hits += 1;
+          // Count regions.
+          const reg = pt.region.toLowerCase();
+          summary[team].regions[reg] = (summary[team].regions[reg] || 0) + 1;
+          // Count movements.
+          if (pt.movement) {
+            const mov = pt.movement.toLowerCase();
+            summary[team].movements[mov] = (summary[team].movements[mov] || 0) + 1;
+          }
+          // Count weak points (ignoring "none").
+          if (pt.weakPoint.toLowerCase() !== "none") {
+            const wp = pt.weakPoint.toLowerCase();
+            summary[team].weakPoints[wp] = (summary[team].weakPoints[wp] || 0) + 1;
+          }
         }
+      });
 
-        let firstTimeSeconds = null;
-        for (const line of lines) {
-          let match;
-          let timestamp, team, damageType, region, weakPoint, movement, amount;
-          if ((match = sendRegex.exec(line))) {
-            matchActive = true;
-            timestamp = match[1];
-            team = match[2];
-            damageType = match[3];
-            region = match[4];
-            movement = match[5]; // "movement" for send lines.
-            weakPoint = match[6] || "None";
-            amount = parseFloat(match[7]);
-          } else if ((match = receiveRegex.exec(line))) {
-            matchActive = true;
-            timestamp = match[1];
-            team = match[2];
-            damageType = match[3];
-            region = match[4];
-            weakPoint = match[5] || "None";
-            movement = match[6]; // "movementType" for receive lines.
-            amount = parseFloat(match[7]);
-          } else if (resultsRegex.test(line)) {
-            if (matchActive && matchData.length > 0) {
-              matches.push(matchData);
-              matchData = [];
-            }
-            matchActive = false;
-            continue;
-          } else {
-            continue;
-          }
-          const tSeconds = timeToSeconds(timestamp);
-          if (firstTimeSeconds === null) {
-            firstTimeSeconds = tSeconds;
-          }
-          const timeOffset = tSeconds - firstTimeSeconds;
-          let category;
-          if (damageType === "None") {
-            category = "guard";
-          } else if (damageType === "Hit") {
-            category = "strike";
-          } else {
-            category = "knockdown";
-          }
-          const knockdownText = category === "knockdown" ? "Yes" : "No";
-          const tooltip =
-            "Time: " + timestamp +
-            "\nTeam: " + team +
-            "\nType: " + damageType +
-            "\nRegion: " + region +
-            "\nWeakPoint: " + weakPoint +
-            "\nKnockdown: " + knockdownText +
-            "\nMovement: " + movement +
-            "\nAmount: " + amount;
-          matchData.push({
-            time: timeOffset,
-            amount: amount,
-            team: team,
-            damageType: damageType,
-            region: region,
-            weakPoint: weakPoint,
-            movement: movement,
-            category: category,
-            tooltip: tooltip,
-          });
-        }
-        if (matchData.length > 0) {
-          matches.push(matchData);
-        }
-        return matches;
+      // Prepare rows for the table.
+      // Each row represents a metric.
+      const metrics = [];
+      metrics.push({
+        name: "Total Punches",
+        red: summary.PlayerRed.punches,
+        blue: summary.PlayerBlue.punches
+      });
+      metrics.push({
+        name: "Total Hits",
+        red: summary.PlayerRed.hits,
+        blue: summary.PlayerBlue.hits
+      });
+      metrics.push({
+        name: "Total Damage",
+        red: summary.PlayerRed.damage.toFixed(2),
+        blue: summary.PlayerBlue.damage.toFixed(2)
+      });
+      const landPercentRed = summary.PlayerRed.punches > 0 ? ((summary.PlayerRed.hits / summary.PlayerRed.punches) * 100).toFixed(1) : "0.0";
+      const landPercentBlue = summary.PlayerBlue.punches > 0 ? ((summary.PlayerBlue.hits / summary.PlayerBlue.punches) * 100).toFixed(1) : "0.0";
+      metrics.push({
+        name: "Land %",
+        red: landPercentRed + "%",
+        blue: landPercentBlue + "%"
+      });
+
+      // Dynamic rows for regions.
+      Object.keys(summary.PlayerRed.regions).sort().forEach(reg => {
+        metrics.push({
+          name: reg.charAt(0).toUpperCase() + reg.slice(1) + " (Region)",
+          red: summary.PlayerRed.regions[reg] || 0,
+          blue: summary.PlayerBlue.regions[reg] || 0
+        });
+      });
+      // Dynamic rows for movements.
+      Object.keys(summary.PlayerRed.movements).sort().forEach(mov => {
+        metrics.push({
+          name: mov.charAt(0).toUpperCase() + mov.slice(1) + " (Movement)",
+          red: summary.PlayerRed.movements[mov] || 0,
+          blue: summary.PlayerBlue.movements[mov] || 0
+        });
+      });
+      // Dynamic rows for weak points.
+      Object.keys(summary.PlayerRed.weakPoints).sort().forEach(wp => {
+        metrics.push({
+          name: wp.charAt(0).toUpperCase() + wp.slice(1) + " (Weak)",
+          red: summary.PlayerRed.weakPoints[wp] || 0,
+          blue: summary.PlayerBlue.weakPoints[wp] || 0
+        });
+      });
+
+      // Build the table HTML.
+      let html = `<table cellpadding="5" cellspacing="0">
+              <tr>
+                <th>Metric</th>
+                <th style="color: red; font-weight: bold;">PlayerRed</th>
+                <th style="color: blue; font-weight: bold;">PlayerBlue</th>
+              </tr>`;
+      metrics.forEach(metric => {
+        html += `<tr>
+             <td>${metric.name}</td>
+             <td style="color: red;">${metric.red}</td>
+             <td style="color: blue;">${metric.blue}</td>
+           </tr>`;
+      });
+      html += `</table>`;
+      document.getElementById("summaryTotals").innerHTML = html;
+    }
+
+    // Navigation handlers.
+    function showNextMatch() {
+      if (matchIndex < currentMatchData.length - 1) {
+        matchIndex++;
+        displayMatchData(currentMatchData[matchIndex]);
+        updateNavButtons();
+      } else {
+        alert("No more matches available.");
       }
-
-      // Filter match data based on type, region, movement, and weak point filters.
-      function filterMatchData(matchData) {
-        const showGuard = document.getElementById("filterGuard").checked;
-        const showStrike = document.getElementById("filterStrike").checked;
-        const showKnockdown = document.getElementById("filterKnockdown").checked;
-
-        const regionCheckboxes = document.querySelectorAll('input[name="regionFilter"]');
-        const selectedRegions = new Set();
-        regionCheckboxes.forEach((cb) => {
-          if (cb.checked) {
-            selectedRegions.add(cb.value);
-          }
-        });
-
-        const movementCheckboxes = document.querySelectorAll('input[name="movementFilter"]');
-        const selectedMovements = new Set();
-        movementCheckboxes.forEach((cb) => {
-          if (cb.checked) {
-            selectedMovements.add(cb.value);
-          }
-        });
-
-        const weakPointCheckboxes = document.querySelectorAll('input[name="weakPointFilter"]');
-        const selectedWeakPoints = new Set();
-        weakPointCheckboxes.forEach((cb) => {
-          if (cb.checked) {
-            selectedWeakPoints.add(cb.value);
-          }
-        });
-
-        return matchData.filter((pt) => {
-          if (pt.category === "guard" && !showGuard) return false;
-          if (pt.category === "strike" && !showStrike) return false;
-          if (pt.category === "knockdown" && !showKnockdown) return false;
-          if (!selectedRegions.has(pt.region.toLowerCase())) return false;
-          if (pt.movement && !selectedMovements.has(pt.movement.toLowerCase())) return false;
-          // For weak points: if weakPoint is not "none", it must be in the selected set.
-          if (pt.weakPoint.toLowerCase() !== "none" && !selectedWeakPoints.has(pt.weakPoint.toLowerCase())) return false;
-          return true;
-        });
+    }
+    function showPrevMatch() {
+      if (matchIndex > 0) {
+        matchIndex--;
+        displayMatchData(currentMatchData[matchIndex]);
+        updateNavButtons();
+      } else {
+        alert("Already at the first match.");
       }
-
-      // Group data points by team and category.
-      function groupData(dataPoints) {
-        const seriesData = {};
-        dataPoints.forEach((pt) => {
-          const key = pt.team + "_" + pt.category;
-          if (!seriesData[key]) {
-            seriesData[key] = [];
-          }
-          seriesData[key].push(pt);
-        });
-        return seriesData;
+    }
+    function updateNavButtons() {
+      document.getElementById("prevButton").disabled = matchIndex === 0;
+      document.getElementById("nextButton").disabled = matchIndex === currentMatchData.length - 1;
+    }
+    function onWindowResize() {
+      if (currentDataTable && currentSeriesKeys) {
+        drawChart(currentDataTable, currentSeriesKeys);
       }
-
-      // Build the data table for Google Charts.
-      function buildDataTable(seriesData) {
-        const timeSet = new Set();
-        for (const key in seriesData) {
-          seriesData[key].forEach((pt) => timeSet.add(pt.time));
-        }
-        const times = Array.from(timeSet).sort((a, b) => a - b);
-        const seriesKeys = Object.keys(seriesData).sort();
-        const dataTable = new google.visualization.DataTable();
-        dataTable.addColumn("number", "Time (s)");
-        seriesKeys.forEach((key) => {
-          dataTable.addColumn("number", key);
-          dataTable.addColumn({ type: "string", role: "tooltip", p: { html: true } });
-        });
-        const seriesLookup = {};
-        seriesKeys.forEach((key) => {
-          seriesLookup[key] = {};
-          seriesData[key].forEach((pt) => {
-            seriesLookup[key][pt.time] = { value: pt.amount, tooltip: pt.tooltip };
-          });
-        });
-        const rows = times.map((t) => {
-          const row = [t];
-          seriesKeys.forEach((key) => {
-            if (seriesLookup[key][t]) {
-              row.push(seriesLookup[key][t].value);
-              row.push(seriesLookup[key][t].tooltip);
-            } else {
-              row.push(null);
-              row.push(null);
-            }
-          });
-          return row;
-        });
-        dataTable.addRows(rows);
-        return { dataTable, seriesKeys, times };
-      }
-
-      // Draw the chart.
-      function drawChart(dataTable, seriesKeys) {
-        const seriesOptions = {};
-        seriesKeys.forEach((key, index) => {
-          const parts = key.split("_");
-          const team = parts[0];
-          const category = parts[1];
-          let color = teamColors[team] || "black";
-          let pointShape = "circle";
-          const seriesOpts = { color: color, pointSize: 10 };
-          if (category === "guard") {
-            pointShape = "square";
-          } else if (category === "strike") {
-            pointShape = "triangle";
-          } else if (category === "knockdown") {
-            pointShape = "diamond";
-            color = team === "PlayerRed" ? "darkred" : "darkblue";
-            seriesOpts.color = color;
-          }
-          seriesOpts.pointShape = pointShape;
-          seriesOptions[index] = seriesOpts;
-        });
-        const options = {
-          title: "Damage Over Time",
-          hAxis: { title: "Time (s)" },
-          vAxis: { title: "Damage Amount" },
-          tooltip: { isHtml: false },
-          pointSize: 10,
-          series: seriesOptions,
-          legend: { position: "bottom", maxLines: 2 },
-          chartArea: { top: 50, left: 50, width: "80%", height: "70%" },
-        };
-        const chart = new google.visualization.ScatterChart(
-          document.getElementById("chart_div")
-        );
-        chart.draw(dataTable, options);
-      }
-
-      // Display match data (chart and summary) using filtered data.
-      function displayMatchData(matchData) {
-        const filteredData = filterMatchData(matchData);
-        const seriesData = groupData(filteredData);
-        const { dataTable, seriesKeys } = buildDataTable(seriesData);
-        currentDataTable = dataTable;
-        currentSeriesKeys = seriesKeys;
-        drawChart(dataTable, seriesKeys);
-        displaySummaryTotals(filteredData);
-      }
-
-      // Build and display the advanced summary table dynamically.
-      function displaySummaryTotals(matchData) {
-        const summary = {
-          PlayerRed: { punches: 0, hits: 0, damage: 0, moving: 0, regions: {} },
-          PlayerBlue: { punches: 0, hits: 0, damage: 0, moving: 0, regions: {} },
-        };
-        const uniqueRegions = new Set();
-        matchData.forEach((pt) => {
-          if (pt.team === "PlayerRed" || pt.team === "PlayerBlue") {
-            summary[pt.team].punches += 1;
-            summary[pt.team].damage += pt.amount;
-            if (pt.damageType !== "None") summary[pt.team].hits += 1;
-            if (pt.movement && pt.movement.toLowerCase() === "movingintopunch") {
-              summary[pt.team].moving += 1;
-            }
-            const reg = pt.region.toLowerCase();
-            uniqueRegions.add(reg);
-            if (!summary[pt.team].regions[reg]) summary[pt.team].regions[reg] = 0;
-            summary[pt.team].regions[reg] += 1;
-          }
-        });
-        let html = `<h3>Basic Summary Totals</h3>`;
-        html += `<p style="color: red;"><strong>Red:</strong> Total Damage: ${summary.PlayerRed.damage.toFixed(
-          2
-        )}, Total Hits: ${summary.PlayerRed.hits}</p>`;
-        html += `<p style="color: blue;"><strong>Blue:</strong> Total Damage: ${summary.PlayerBlue.damage.toFixed(
-          2
-        )}, Total Hits: ${summary.PlayerBlue.hits}</p>`;
-        html += `<h3>Advanced Summary</h3>`;
-        html += `<table cellpadding="5" cellspacing="0">
-                  <tr>
-                    <th>Player</th>
-                    <th>Total Punches</th>
-                    <th>Total Hits</th>
-                    <th>Moving Into Punch</th>`;
-        Array.from(uniqueRegions)
-          .sort()
-          .forEach((reg) => {
-            html += `<th>${reg.charAt(0).toUpperCase() + reg.slice(1)}</th>`;
-          });
-        html += `<th>Total Damage</th>
-                 <th>Land %</th>
-                 </tr>`;
-        for (const team in summary) {
-          let s = summary[team];
-          let landPercent =
-            s.punches > 0 ? ((s.hits / s.punches) * 100).toFixed(1) : "0.0";
-          let color = team === "PlayerRed" ? "red" : "blue";
-          html += `<tr>
-                      <td style="color:${color}; font-weight:bold;">${team}</td>
-                      <td>${s.punches}</td>
-                      <td>${s.hits}</td>
-                      <td>${s.moving}</td>`;
-          Array.from(uniqueRegions)
-            .sort()
-            .forEach((reg) => {
-              let count = s.regions[reg] || 0;
-              html += `<td>${count}</td>`;
-            });
-          html += `<td>${s.damage.toFixed(2)}</td>
-                   <td>${landPercent}%</td>
-                   </tr>`;
-        }
-        html += `</table>`;
-        document.getElementById("summaryTotals").innerHTML = html;
-      }
-
-      // Navigation handlers.
-      function showNextMatch() {
-        if (matchIndex < currentMatchData.length - 1) {
-          matchIndex++;
+    }
+    // File selection handler.
+    function handleFileSelect(evt) {
+      const file = evt.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const text = e.target.result;
+        currentMatchData = parseLog(text);
+        if (currentMatchData.length > 0) {
+          generateRegionFilters(currentMatchData);
+          generateMovementFilters(currentMatchData);
+          generateWeakPointFilters(currentMatchData);
+          matchIndex = 0;
           displayMatchData(currentMatchData[matchIndex]);
           updateNavButtons();
         } else {
-          alert("No more matches available.");
+          alert("No valid match data found.");
         }
-      }
+      };
+      reader.readAsText(file);
+    }
+  </script>
+</head>
 
-      function showPrevMatch() {
-        if (matchIndex > 0) {
-          matchIndex--;
-          displayMatchData(currentMatchData[matchIndex]);
-          updateNavButtons();
-        } else {
-          alert("Already at the first match.");
-        }
-      }
-
-      function updateNavButtons() {
-        document.getElementById("prevButton").disabled = matchIndex === 0;
-        document.getElementById("nextButton").disabled =
-          matchIndex === currentMatchData.length - 1;
-      }
-
-      function onWindowResize() {
-        if (currentDataTable && currentSeriesKeys) {
-          drawChart(currentDataTable, currentSeriesKeys);
-        }
-      }
-
-      // File selection handler.
-      function handleFileSelect(evt) {
-        const file = evt.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const text = e.target.result;
-          currentMatchData = parseLog(text);
-          if (currentMatchData.length > 0) {
-            generateRegionFilters(currentMatchData);
-            generateMovementFilters(currentMatchData);
-            generateWeakPointFilters(currentMatchData);
-            matchIndex = 0;
-            displayMatchData(currentMatchData[matchIndex]);
-            updateNavButtons();
-          } else {
-            alert("No valid match data found.");
-          }
-        };
-        reader.readAsText(file);
-      }
-    </script>
-  </head>
-  <body>
-    <h1>Damage Log Visualizer</h1>
-    <div id="controls">
-      <input type="file" id="fileInput" accept=".txt" />
-      <br /><br />
-      <button id="prevButton" disabled>Previous Match</button>
-      <button id="nextButton" disabled>Next Match</button>
-    </div>
-    <div id="filters">
-      <!-- Static type filters -->
-      <label>
-        <input type="checkbox" id="filterGuard" name="filter" checked />
-        Guard
-      </label>
-      <label>
-        <input type="checkbox" id="filterStrike" name="filter" checked />
-        Strike
-      </label>
-      <label>
-        <input type="checkbox" id="filterKnockdown" name="filter" checked />
-        Knockdown
-      </label>
-      <!-- Dynamic filters -->
-      <div id="regionFilters"></div>
-      <div id="movementFilters"></div>
-      <div id="weakPointFilters"></div>
-    </div>
-    <div id="chart_div"></div>
+<body>
+  <h1>Damage Log Visualizer</h1>
+  <div id="controls">
+    <input type="file" id="fileInput" accept=".txt" />
+    <br /><br />
+    <button id="prevButton" disabled>Previous Match</button>
+    <button id="nextButton" disabled>Next Match</button>
+  </div>
+  <div id="filters">
+    <!-- Static type filters -->
+    <label>
+      <input type="checkbox" id="filterGuard" name="filter" checked />
+      Guard
+    </label>
+    <label>
+      <input type="checkbox" id="filterStrike" name="filter" checked />
+      Strike
+    </label>
+    <label>
+      <input type="checkbox" id="filterKnockdown" name="filter" checked />
+      Knockdown
+    </label>
+    <!-- Dynamic filters -->
+    <div id="regionFilters"></div>
+    <div id="movementFilters"></div>
+    <div id="weakPointFilters"></div>
+  </div>
+  <div id="chart_div"></div>
+  <!-- Responsive container for the transposed advanced summary table -->
+  <div id="summaryContainer">
     <div id="summaryTotals"></div>
-  </body>
+  </div>
+</body>
+
 </html>
