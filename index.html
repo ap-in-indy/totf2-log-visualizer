@@ -209,6 +209,9 @@
       document.getElementById("prevButton").addEventListener("click", showPrevMatch);
       window.addEventListener("resize", onWindowResize);
       attachStaticFilterListeners();
+      document.getElementById("damageThreshold").addEventListener("input", () => {
+        displayMatchData(currentMatchData[matchIndex]);
+      });
     }
 
     // Parse the log file into matches.
@@ -307,6 +310,7 @@
       const showGuard = document.getElementById("filterGuard").checked;
       const showStrike = document.getElementById("filterStrike").checked;
       const showKnockdown = document.getElementById("filterKnockdown").checked;
+      const damageThreshold = parseFloat(document.getElementById("damageThreshold").value) || 0;
       const regionCheckboxes = document.querySelectorAll('input[name="regionFilter"]');
       const selectedRegions = new Set();
       regionCheckboxes.forEach((cb) => {
@@ -330,6 +334,8 @@
         if (pt.movement && !selectedMovements.has(pt.movement.toLowerCase())) return false;
         // For weak points: if weakPoint is not "none", then it must be selected.
         if (pt.weakPoint.toLowerCase() !== "none" && !selectedWeakPoints.has(pt.weakPoint.toLowerCase())) return false;
+        // Only include events with damage >= threshold.
+        if (pt.amount < damageThreshold) return false;
         return true;
       });
     }
@@ -606,6 +612,12 @@
     <div id="regionFilters"></div>
     <div id="movementFilters"></div>
     <div id="weakPointFilters"></div>
+    <div id="damageThresholdContainer">
+      <label>
+        Minimum Damage Threshold:
+        <input type="number" id="damageThreshold" value="5" min="0" style="width: 70px;" />
+      </label>
+    </div>
   </div>
   <div id="chart_div"></div>
   <!-- Responsive container for the transposed advanced summary table -->
