@@ -98,6 +98,9 @@
       PlayerBlue: "blue",
     };
 
+    let currentPlayerName = "PlayerRed";
+    let currentOpponentName = "PlayerBlue";
+
     let currentMatchData = []; // Array of matches; each match is an array of events.
     let matchIndex = 0;
     let currentDataTable = null;
@@ -105,6 +108,35 @@
     let allRegions = new Set(); // For dynamic region filters.
     let allMovements = new Set(); // For dynamic movement filters.
     let allWeakPoints = new Set(); // For dynamic weak point filters.
+
+    function updateTeamSettings() {
+      const playerNameInput = document.getElementById("playerName").value.trim() || "PlayerRed";
+      const playerColorInput = document.getElementById("playerColor").value || "#FF0000";
+      const opponentNameInput = document.getElementById("opponentName").value.trim() || "PlayerBlue";
+      const opponentColorInput = document.getElementById("opponentColor").value || "#0000FF";
+
+      // Update the globals.
+      currentPlayerName = playerNameInput;
+      currentOpponentName = opponentNameInput;
+
+      // Update the teamColors object.
+      teamColors[currentPlayerName] = playerColorInput;
+      teamColors[currentOpponentName] = opponentColorInput;
+
+      // Remap events in the current match.
+      currentMatchData.forEach(match => {
+        match.forEach(event => {
+          if (event.team === "PlayerRed" || event.team === "PlayerBlue") {
+            event.team = event.team === "PlayerRed" ? currentPlayerName : currentOpponentName;
+            // Optionally update tooltip if needed.
+            event.tooltip = event.tooltip.replace(/PlayerRed|PlayerBlue/g, event.team);
+          }
+        });
+      });
+
+      // Refresh visualizations.
+      displayMatchData(currentMatchData[matchIndex]);
+    }
 
     // Attach listeners to static type filters.
     function attachStaticFilterListeners() {
@@ -201,6 +233,7 @@
           </label>`;
       });
       attachWeakPointFilterListeners();
+      document.getElementById("updateColors").addEventListener("click", updateTeamSettings);
     }
 
     function init() {
@@ -435,16 +468,14 @@
       displaySummaryTotals(filteredData);
     }
 
-    // Build and display the advanced summary table dynamically.
     function displaySummaryTotals(filteredEvents) {
       // Compute summary per player from filtered events.
-      const summary = {
-        PlayerRed: { punches: 0, hits: 0, damage: 0, regions: {}, movements: {}, weakPoints: {} },
-        PlayerBlue: { punches: 0, hits: 0, damage: 0, regions: {}, movements: {}, weakPoints: {} }
-      };
+      const summary = {};
+      summary[currentPlayerName] = { punches: 0, hits: 0, damage: 0, regions: {}, movements: {}, weakPoints: {} };
+      summary[currentOpponentName] = { punches: 0, hits: 0, damage: 0, regions: {}, movements: {}, weakPoints: {} };
 
       filteredEvents.forEach(pt => {
-        if (pt.team === "PlayerRed" || pt.team === "PlayerBlue") {
+        if (pt.team === currentPlayerName || pt.team === currentOpponentName) {
           const team = pt.team;
           summary[team].punches += 1;
           summary[team].damage += pt.amount;
@@ -465,74 +496,67 @@
         }
       });
 
-      // Prepare rows for the table.
-      // Each row represents a metric.
+      // Prepare an array of metrics rows.
       const metrics = [];
-      metrics.push({
-        name: "Total Punches",
-        red: summary.PlayerRed.punches,
-        blue: summary.PlayerBlue.punches
-      });
-      metrics.push({
-        name: "Total Hits",
-        red: summary.PlayerRed.hits,
-        blue: summary.PlayerBlue.hits
-      });
-      metrics.push({
-        name: "Total Damage",
-        red: summary.PlayerRed.damage.toFixed(2),
-        blue: summary.PlayerBlue.damage.toFixed(2)
-      });
-      const landPercentRed = summary.PlayerRed.punches > 0 ? ((summary.PlayerRed.hits / summary.PlayerRed.punches) * 100).toFixed(1) : "0.0";
-      const landPercentBlue = summary.PlayerBlue.punches > 0 ? ((summary.PlayerBlue.hits / summary.PlayerBlue.punches) * 100).toFixed(1) : "0.0";
-      metrics.push({
-        name: "Land %",
-        red: landPercentRed + "%",
-        blue: landPercentBlue + "%"
-      });
+      metrics.push({ name: "Total Punches", red: summary[currentPlayerName].punches, blue: summary[currentOpponentName].punches });
+      metrics.push({ name: "Total Hits", red: summary[currentPlayerName].hits, blue: summary[currentOpponentName].hits });
+      metrics.push({ name: "Total Damage", red: summary[currentPlayerName].damage.toFixed(2), blue: summary[currentOpponentName].damage.toFixed(2) });
+      const landPercentRed = summary[currentPlayerName].punches > 0 ? ((summary[currentPlayerName].hits / summary[currentPlayerName].punches) * 100).toFixed(1) : "0.0";
+      const landPercentBlue = summary[currentOpponentName].punches > 0 ? ((summary[currentOpponentName].hits / summary[currentOpponentName].punches) * 100).toFixed(1) : "0.0";
+      metrics.push({ name: "Land %", red: landPercentRed + "%", blue: landPercentBlue + "%" });
 
-      // Dynamic rows for regions.
-      Object.keys(summary.PlayerRed.regions).sort().forEach(reg => {
+      // Dynamic rows for Regions.
+      Object.keys(summary[currentPlayerName].regions).sort().forEach(reg => {
         metrics.push({
           name: reg.charAt(0).toUpperCase() + reg.slice(1) + " (Region)",
-          red: summary.PlayerRed.regions[reg] || 0,
-          blue: summary.PlayerBlue.regions[reg] || 0
+          red: summary[currentPlayerName].regions[reg] || 0,
+          blue: summary[currentOpponentName].regions[reg] || 0
         });
       });
-      // Dynamic rows for movements.
-      Object.keys(summary.PlayerRed.movements).sort().forEach(mov => {
+      // Dynamic rows for Movements.
+      Object.keys(summary[currentPlayerName].movements).sort().forEach(mov => {
         metrics.push({
           name: mov.charAt(0).toUpperCase() + mov.slice(1) + " (Movement)",
-          red: summary.PlayerRed.movements[mov] || 0,
-          blue: summary.PlayerBlue.movements[mov] || 0
+          red: summary[currentPlayerName].movements[mov] || 0,
+          blue: summary[currentOpponentName].movements[mov] || 0
         });
       });
-      // Dynamic rows for weak points.
-      Object.keys(summary.PlayerRed.weakPoints).sort().forEach(wp => {
+      // Dynamic rows for Weak Points.
+      Object.keys(summary[currentPlayerName].weakPoints).sort().forEach(wp => {
         metrics.push({
           name: wp.charAt(0).toUpperCase() + wp.slice(1) + " (Weak)",
-          red: summary.PlayerRed.weakPoints[wp] || 0,
-          blue: summary.PlayerBlue.weakPoints[wp] || 0
+          red: summary[currentPlayerName].weakPoints[wp] || 0,
+          blue: summary[currentOpponentName].weakPoints[wp] || 0
         });
       });
 
-      // Build the table HTML.
-      let html = `<table cellpadding="5" cellspacing="0">
-              <tr>
-                <th>Metric</th>
-                <th style="color: red; font-weight: bold;">PlayerRed</th>
-                <th style="color: blue; font-weight: bold;">PlayerBlue</th>
-              </tr>`;
-      metrics.forEach(metric => {
-        html += `<tr>
-             <td>${metric.name}</td>
-             <td style="color: red;">${metric.red}</td>
-             <td style="color: blue;">${metric.blue}</td>
-           </tr>`;
-      });
-      html += `</table>`;
-      document.getElementById("summaryTotals").innerHTML = html;
+      // Break metrics into chunks of 10.
+      const chunkSize = 10;
+      let tablesHtml = "";
+      for (let i = 0; i < metrics.length; i += chunkSize) {
+        const chunk = metrics.slice(i, i + chunkSize);
+        let tableHtml = `<table cellpadding="5" cellspacing="0" style="margin: 10px;">
+      <tr>
+        <th>Metric</th>
+        <th style="color: ${teamColors[currentPlayerName]}; font-weight: bold;">${currentPlayerName}</th>
+        <th style="color: ${teamColors[currentOpponentName]}; font-weight: bold;">${currentOpponentName}</th>
+      </tr>`;
+        chunk.forEach(metric => {
+          tableHtml += `<tr>
+        <td>${metric.name}</td>
+        <td style="color: ${teamColors[currentPlayerName]};">${metric.red}</td>
+        <td style="color: ${teamColors[currentOpponentName]};">${metric.blue}</td>
+      </tr>`;
+        });
+        tableHtml += `</table>`;
+        tablesHtml += tableHtml;
+      }
+
+      // Wrap all tables in a flex container.
+      const finalHtml = `<div style="display: flex; flex-wrap: wrap; justify-content: center;">${tablesHtml}</div>`;
+      document.getElementById("summaryTotals").innerHTML = finalHtml;
     }
+
 
     // Navigation handlers.
     function showNextMatch() {
@@ -593,6 +617,25 @@
     <br /><br />
     <button id="prevButton" disabled>Previous Match</button>
     <button id="nextButton" disabled>Next Match</button>
+  </div>
+  <div id="playerSettings" style="text-align: center; margin-bottom: 10px;">
+    <label>
+      Your Name:
+      <input type="text" id="playerName" value="PlayerRed" style="width: 100px;" />
+    </label>
+    <label>
+      Your Color:
+      <input type="color" id="playerColor" value="#FF0000" />
+    </label>
+    <label>
+      Opponent Name:
+      <input type="text" id="opponentName" value="PlayerBlue" style="width: 100px;" />
+    </label>
+    <label>
+      Opponent Color:
+      <input type="color" id="opponentColor" value="#0000FF" />
+    </label>
+    <button id="updateColors">Update Colors</button>
   </div>
   <div id="filters">
     <!-- Static type filters -->
