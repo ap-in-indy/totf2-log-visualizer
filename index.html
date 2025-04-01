@@ -70,14 +70,14 @@
     google.charts.load("current", { packages: ["corechart"] });
     google.charts.setOnLoadCallback(init);
 
-    // We use the log's original team names for color.
+    // Colors come from the logs. We use defaults:
     const defaultColors = {
       PlayerRed: "red",
       PlayerBlue: "blue",
     };
 
-    // Our rule: all send events become "You" and all receive events become "Them".
-    // No connection-based detection is used.
+    // Our mapping rule: all send events become "You" and all receive events become "Them".
+    // (No manual override now.)
     let currentPlayerName = "You";
     let currentOpponentName = "Them";
 
@@ -109,6 +109,13 @@
       document.querySelectorAll('input[name="weakPointFilter"]').forEach(cb => {
         cb.addEventListener("change", () => displayMatchData(currentMatchData[matchIndex]));
       });
+    }
+    // New: Attach static filter listener for Clinch.
+    function attachClinchFilterListener() {
+      const cb = document.getElementById("filterClinch");
+      if (cb) {
+        cb.addEventListener("change", () => displayMatchData(currentMatchData[matchIndex]));
+      }
     }
 
     // --- Dynamic Filter Generation ---
@@ -165,6 +172,18 @@
       });
       attachWeakPointFilterListeners();
     }
+    // New: Generate static filter for Clinch events.
+    function generateClinchFilter() {
+      const container = document.getElementById("staticFilters");
+      // Append Clinch checkbox if not already present.
+      if (!document.getElementById("filterClinch")) {
+        container.innerHTML += `<label>
+            <input type="checkbox" id="filterClinch" name="filter" checked />
+            Clinch
+          </label>`;
+        attachStaticFilterListeners();
+      }
+    }
 
     // --- Initialization ---
     function init() {
@@ -186,7 +205,11 @@
       const sendRegex = /\[(.*?)\].*Match damage send: Id: \d+ Type: (\w+) type: (\w+) region: (\w+) movement: (\w*) weakPoint: (\w*) amount: ([\d.]+).*closest neutral corner: (\w+)/;
       // Regex for receive events.
       const receiveRegex = /\[(.*?)\].*Match damage received: Id: \d+ Type: (\w+), type: (\w+) region: (\w+) weakPoint: (\w*) movementType: (\w*) amount: ([\d.]+)/;
-      // Regex to indicate end of match.
+      // Regex for clinch events (send).
+      const clinchSendRegex = /\[(.*?)\].*sending foul:\s*Clinch\s+from\s+(\w+)/;
+      // Regex for clinch events (receive).
+      const clinchReceiveRegex = /\[(.*?)\].*Player foul received:\s*\[player who fouled:\s*(\w+),.*foul type:Clinch/;
+      // Regex for match results.
       const resultsRegex = /Match Results:/;
       function timeToSeconds(tStr) {
         const parts = tStr.split(":");
@@ -204,8 +227,8 @@
         if ((match = sendRegex.exec(line))) {
           matchActive = true;
           timestamp = match[1];
-          origTeam = match[2]; // This will be "PlayerRed" or "PlayerBlue"
-          team = "You"; // All send events are yours.
+          origTeam = match[2]; // "PlayerRed" or "PlayerBlue"
+          team = "You"; // send events are yours
           damageType = match[3];
           region = match[4];
           movement = match[5];
@@ -215,12 +238,33 @@
           matchActive = true;
           timestamp = match[1];
           origTeam = match[2];
-          team = "Them"; // All receive events are from your opponent.
+          team = "Them"; // receive events are from opponent
           damageType = match[3];
           region = match[4];
           weakPoint = match[5] || "None";
           movement = match[6];
           amount = parseFloat(match[7]);
+        } else if ((match = clinchSendRegex.exec(line))) {
+          matchActive = true;
+          timestamp = match[1];
+          // For clinch send, treat as "You" and damage 0.
+          origTeam = match[2] || "Unknown";
+          team = "You";
+          damageType = "Clinch";
+          region = "Clinch";
+          movement = "None";
+          weakPoint = "None";
+          amount = 0;
+        } else if ((match = clinchReceiveRegex.exec(line))) {
+          matchActive = true;
+          timestamp = match[1];
+          origTeam = match[2] || "Unknown";
+          team = "Them";
+          damageType = "Clinch";
+          region = "Clinch";
+          movement = "None";
+          weakPoint = "None";
+          amount = 0;
         } else if (resultsRegex.test(line)) {
           if (matchActive && matchData.length > 0) {
             matches.push(matchData);
@@ -234,11 +278,14 @@
         const tSeconds = timeToSeconds(timestamp);
         if (firstTimeSeconds === null) firstTimeSeconds = tSeconds;
         const timeOffset = tSeconds - firstTimeSeconds;
+        // Determine category.
         let category;
         if (damageType === "None") {
           category = "guard";
         } else if (damageType === "Hit") {
           category = "strike";
+        } else if (damageType === "Clinch") {
+          category = "clinch";
         } else {
           category = "knockdown";
         }
@@ -251,12 +298,11 @@
           "\nKnockdown: " + knockdownText +
           "\nMovement: " + movement +
           "\nAmount: " + amount;
-        // Store origTeam for color lookup.
         matchData.push({
           time: timeOffset,
           amount: amount,
           team: team,
-          origTeam: origTeam,
+          origTeam: origTeam, // store original team from log
           damageType: damageType,
           region: region,
           weakPoint: weakPoint,
@@ -276,6 +322,8 @@
       const showGuard = document.getElementById("filterGuard").checked;
       const showStrike = document.getElementById("filterStrike").checked;
       const showKnockdown = document.getElementById("filterKnockdown").checked;
+      // New: Clinch filter – if not checked, filter out clinch events.
+      const showClinch = document.getElementById("filterClinch") ? document.getElementById("filterClinch").checked : true;
       const damageThreshold = parseFloat(document.getElementById("damageThreshold").value) || 0;
       const regionCheckboxes = document.querySelectorAll('input[name="regionFilter"]');
       const selectedRegions = new Set();
@@ -290,6 +338,7 @@
         if (pt.category === "guard" && !showGuard) return false;
         if (pt.category === "strike" && !showStrike) return false;
         if (pt.category === "knockdown" && !showKnockdown) return false;
+        if (pt.category === "clinch" && !showClinch) return false;
         if (!selectedRegions.has(pt.region.toLowerCase())) return false;
         if (pt.movement && !selectedMovements.has(pt.movement.toLowerCase())) return false;
         if (pt.weakPoint.toLowerCase() !== "none" && !selectedWeakPoints.has(pt.weakPoint.toLowerCase())) return false;
@@ -369,6 +418,8 @@
           pointShape = "triangle";
         } else if (category === "knockdown") {
           pointShape = "diamond";
+        } else if (category === "clinch") {
+          pointShape = "star"; // For clinches, use a star marker.
         }
         seriesOpts.pointShape = pointShape;
         seriesOptions[index] = seriesOpts;
@@ -399,7 +450,7 @@
     }
 
     function displaySummaryTotals(filteredEvents) {
-      // Determine colors for "You" and "Them" from the filtered events.
+      // Determine colors for "You" and "Them" from filtered events.
       let colorYou = "black", colorThem = "black";
       filteredEvents.forEach(ev => {
         if (ev.team === currentPlayerName && colorYou === "black") {
@@ -473,17 +524,17 @@
       for (let i = 0; i < metrics.length; i += chunkSize) {
         const chunk = metrics.slice(i, i + chunkSize);
         let tableHtml = `<table cellpadding="5" cellspacing="0" style="margin: 10px;">
-      <tr>
-        <th>Metric</th>
-        <th style="color: ${colorYou}; font-weight: bold;">${currentPlayerName}</th>
-        <th style="color: ${colorThem}; font-weight: bold;">${currentOpponentName}</th>
-      </tr>`;
+            <tr>
+              <th>Metric</th>
+              <th style="color: ${colorYou}; font-weight: bold;">${currentPlayerName}</th>
+              <th style="color: ${colorThem}; font-weight: bold;">${currentOpponentName}</th>
+            </tr>`;
         chunk.forEach(metric => {
           tableHtml += `<tr>
-        <td>${metric.name}</td>
-        <td style="color: ${colorYou};">${metric.you}</td>
-        <td style="color: ${colorThem};">${metric.them}</td>
-      </tr>`;
+              <td>${metric.name}</td>
+              <td style="color: ${colorYou};">${metric.you}</td>
+              <td style="color: ${colorThem};">${metric.them}</td>
+            </tr>`;
         });
         tableHtml += `</table>`;
         tablesHtml += tableHtml;
@@ -533,6 +584,29 @@
           generateRegionFilters(currentMatchData);
           generateMovementFilters(currentMatchData);
           generateWeakPointFilters(currentMatchData);
+          // Add clinch static filter checkbox if not present.
+          if (!document.getElementById("filterClinch")) {
+            const staticContainer = document.getElementById("filters");
+            staticContainer.innerHTML = `<div id="staticFilters">
+                <label>
+                  <input type="checkbox" id="filterGuard" name="filter" checked />
+                  Guard
+                </label>
+                <label>
+                  <input type="checkbox" id="filterStrike" name="filter" checked />
+                  Strike
+                </label>
+                <label>
+                  <input type="checkbox" id="filterKnockdown" name="filter" checked />
+                  Knockdown
+                </label>
+                <label>
+                  <input type="checkbox" id="filterClinch" name="filter" checked />
+                  Clinch
+                </label>
+              </div>` + staticContainer.innerHTML;
+            attachStaticFilterListeners();
+          }
           matchIndex = 0;
           displayMatchData(currentMatchData[matchIndex]);
           updateNavButtons();
@@ -555,27 +629,14 @@
   </div>
   <!-- No manual color customization UI -->
   <div id="filters">
-    <!-- Static type filters -->
-    <label>
-      <input type="checkbox" id="filterGuard" name="filter" checked />
-      Guard
-    </label>
-    <label>
-      <input type="checkbox" id="filterStrike" name="filter" checked />
-      Strike
-    </label>
-    <label>
-      <input type="checkbox" id="filterKnockdown" name="filter" checked />
-      Knockdown
-    </label>
-    <!-- Dynamic filters -->
+    <!-- The static filters are inserted dynamically if not already present -->
     <div id="regionFilters"></div>
     <div id="movementFilters"></div>
     <div id="weakPointFilters"></div>
     <div id="damageThresholdContainer">
       <label>
         Minimum Damage Threshold:
-        <input type="number" id="damageThreshold" value="5" min="0" style="width: 70px;" />
+        <input type="number" id="damageThreshold" value="0" min="0" style="width: 70px;" />
       </label>
     </div>
   </div>
