@@ -53,6 +53,15 @@
       background-color: #f0f0f0;
     }
 
+    .summaryRow.hoverHighlight {
+      outline: 2px solid gold;
+    }
+
+    .summaryRow.persistentHighlight {
+      outline: 2px solid black;
+      background-color: #f7f7f7;
+    }
+
     button {
       margin: 0 5px;
       padding: 5px 10px;
@@ -75,6 +84,11 @@
       PlayerRed: "red",
       PlayerBlue: "blue",
     };
+
+    // Global variables for highlighting
+    let currentHighlight = null;
+    let persistentHighlight = null;
+
 
     // Our mapping rule: all send events become "You" and all receive events become "Them".
     // (No manual override now.)
@@ -397,21 +411,54 @@
 
     function drawChart(dataTable, seriesKeys) {
       const seriesOptions = {};
+      // Get the current match events grouped by series.
+      const currentMatch = currentMatchData[matchIndex];
+      const seriesData = {};
+      currentMatch.forEach(pt => {
+        const key = pt.team + "_" + pt.category;
+        if (!seriesData[key]) seriesData[key] = [];
+        seriesData[key].push(pt);
+      });
+
+      // Determine effective highlight from persistent (if set) or current
+      const effectiveHighlight = persistentHighlight || currentHighlight;
+
       seriesKeys.forEach((key, index) => {
-        // Key format: team_category.
         const parts = key.split("_");
         const team = parts[0]; // "You" or "Them"
         const category = parts[1];
-        // Determine color from the first event of that team in the current match:
         let color = "black";
-        for (const ev of currentMatchData[matchIndex]) {
+        // Pick color from first event in current match for that team.
+        for (const ev of currentMatch) {
           if (ev.team === team) {
             color = defaultColors[ev.origTeam] || "black";
             break;
           }
         }
+        // Base point size
+        let pointSize = 10;
+        // If effectiveHighlight is set, check if any event in this series matches
+        if (effectiveHighlight && seriesData[key]) {
+          const matchesHighlight = seriesData[key].some(ev => {
+            // Check if this series matches both the metric and team, if specified.
+            // We assume effectiveHighlight is an object like:
+            // { metric: <metricName>, team: <"You" or "Them"> }
+            if (effectiveHighlight.team && effectiveHighlight.metric) {
+              return ev[effectiveHighlight.field] &&
+                ev[effectiveHighlight.field].toLowerCase() === effectiveHighlight.value &&
+                ev.team === effectiveHighlight.team;
+            } else if (effectiveHighlight.field && effectiveHighlight.value) {
+              return ev[effectiveHighlight.field] &&
+                ev[effectiveHighlight.field].toLowerCase() === effectiveHighlight.value;
+            }
+            return false;
+          });
+          if (matchesHighlight) {
+            pointSize = 20; // Increase marker size to highlight
+          }
+        }
         let pointShape = "circle";
-        const seriesOpts = { color: color, pointSize: 10 };
+        const seriesOpts = { color: color, pointSize: pointSize };
         if (category === "guard") {
           pointShape = "square";
         } else if (category === "strike") {
@@ -419,11 +466,12 @@
         } else if (category === "knockdown") {
           pointShape = "diamond";
         } else if (category === "clinch") {
-          pointShape = "star"; // For clinches, use a star marker.
+          pointShape = "star";
         }
         seriesOpts.pointShape = pointShape;
         seriesOptions[index] = seriesOpts;
       });
+
       const options = {
         title: "Damage Over Time",
         hAxis: { title: "Time (s)" },
@@ -450,7 +498,7 @@
     }
 
     function displaySummaryTotals(filteredEvents) {
-      // Determine colors for "You" and "Them" from filtered events.
+      // Determine colors for "You" and "Them" from the filtered events.
       let colorYou = "black", colorThem = "black";
       filteredEvents.forEach(ev => {
         if (ev.team === currentPlayerName && colorYou === "black") {
@@ -461,7 +509,7 @@
         }
       });
 
-      // Initialize summary for "You" and "Them".
+      // Build summary objects.
       const summary = {};
       summary[currentPlayerName] = { punches: 0, hits: 0, damage: 0, regions: {}, movements: {}, weakPoints: {} };
       summary[currentOpponentName] = { punches: 0, hits: 0, damage: 0, regions: {}, movements: {}, weakPoints: {} };
@@ -485,63 +533,104 @@
         }
       });
 
+      // Prepare metrics array. For basic metrics, we don't attach any highlight filter.
       const metrics = [];
-      metrics.push({ name: "Total Punches", you: summary[currentPlayerName].punches, them: summary[currentOpponentName].punches });
-      metrics.push({ name: "Total Hits", you: summary[currentPlayerName].hits, them: summary[currentOpponentName].hits });
-      metrics.push({ name: "Total Damage", you: summary[currentPlayerName].damage.toFixed(2), them: summary[currentOpponentName].damage.toFixed(2) });
+      metrics.push({ name: "Total Punches", filter: null, you: summary[currentPlayerName].punches, them: summary[currentOpponentName].punches });
+      metrics.push({ name: "Total Hits", filter: null, you: summary[currentPlayerName].hits, them: summary[currentOpponentName].hits });
+      metrics.push({ name: "Total Damage", filter: null, you: summary[currentPlayerName].damage.toFixed(2), them: summary[currentOpponentName].damage.toFixed(2) });
       const landPercentYou = summary[currentPlayerName].punches > 0 ? ((summary[currentPlayerName].hits / summary[currentPlayerName].punches) * 100).toFixed(1) : "0.0";
       const landPercentThem = summary[currentOpponentName].punches > 0 ? ((summary[currentOpponentName].hits / summary[currentOpponentName].punches) * 100).toFixed(1) : "0.0";
-      metrics.push({ name: "Land %", you: landPercentYou + "%", them: landPercentThem + "%" });
+      metrics.push({ name: "Land %", filter: null, you: landPercentYou + "%", them: landPercentThem + "%" });
 
-      // Dynamic rows for Regions.
+      // For dynamic metrics, we include a filter object.
       Object.keys(summary[currentPlayerName].regions).sort().forEach(reg => {
         metrics.push({
           name: reg.charAt(0).toUpperCase() + reg.slice(1) + " (Region)",
+          filter: { field: "region", value: reg },
           you: summary[currentPlayerName].regions[reg] || 0,
           them: summary[currentOpponentName].regions[reg] || 0
         });
       });
-      // Dynamic rows for Movements.
       Object.keys(summary[currentPlayerName].movements).sort().forEach(mov => {
         metrics.push({
           name: mov.charAt(0).toUpperCase() + mov.slice(1) + " (Movement)",
+          filter: { field: "movement", value: mov },
           you: summary[currentPlayerName].movements[mov] || 0,
           them: summary[currentOpponentName].movements[mov] || 0
         });
       });
-      // Dynamic rows for Weak Points.
       Object.keys(summary[currentPlayerName].weakPoints).sort().forEach(wp => {
         metrics.push({
           name: wp.charAt(0).toUpperCase() + wp.slice(1) + " (Weak)",
+          filter: { field: "weakPoint", value: wp },
           you: summary[currentPlayerName].weakPoints[wp] || 0,
           them: summary[currentOpponentName].weakPoints[wp] || 0
         });
       });
 
-      // Break metrics into chunks of 10.
+      // Break metrics into chunks of 10 and build tables.
       const chunkSize = 10;
       let tablesHtml = "";
       for (let i = 0; i < metrics.length; i += chunkSize) {
         const chunk = metrics.slice(i, i + chunkSize);
         let tableHtml = `<table cellpadding="5" cellspacing="0" style="margin: 10px;">
-            <tr>
-              <th>Metric</th>
-              <th style="color: ${colorYou}; font-weight: bold;">${currentPlayerName}</th>
-              <th style="color: ${colorThem}; font-weight: bold;">${currentOpponentName}</th>
-            </tr>`;
+      <tr>
+        <th>Metric</th>
+        <th style="color: ${colorYou}; font-weight: bold;">${currentPlayerName}</th>
+        <th style="color: ${colorThem}; font-weight: bold;">${currentOpponentName}</th>
+      </tr>`;
         chunk.forEach(metric => {
-          tableHtml += `<tr>
-              <td>${metric.name}</td>
-              <td style="color: ${colorYou};">${metric.you}</td>
-              <td style="color: ${colorThem};">${metric.them}</td>
-            </tr>`;
+          // Add data attributes if this metric has an associated filter.
+          const dataAttr = metric.filter ? `data-field="${metric.filter.field}" data-value="${metric.filter.value}"` : "";
+          tableHtml += `<tr class="summaryRow" ${dataAttr}>
+        <td>${metric.name}</td>
+        <td style="color: ${colorYou};">${metric.you}</td>
+        <td style="color: ${colorThem};">${metric.them}</td>
+      </tr>`;
         });
         tableHtml += `</table>`;
         tablesHtml += tableHtml;
       }
       const finalHtml = `<div style="display: flex; flex-wrap: wrap; justify-content: center;">${tablesHtml}</div>`;
       document.getElementById("summaryTotals").innerHTML = finalHtml;
+
+      // Attach both hover and click events for highlighting.
+      document.querySelectorAll(".summaryRow").forEach(row => {
+        row.addEventListener("mouseover", function () {
+          const field = this.getAttribute("data-field");
+          const value = this.getAttribute("data-value");
+          if (field && value) {
+            currentHighlight = { field: field, value: value.toLowerCase(), team: this.parentElement.parentElement.querySelector("th:nth-child(2)").innerText };
+          } else {
+            currentHighlight = null;
+          }
+          drawChart(currentDataTable, currentSeriesKeys);
+          // Add a CSS class to highlight the row.
+          this.classList.add("hoverHighlight");
+        });
+        row.addEventListener("mouseout", function () {
+          currentHighlight = null;
+          drawChart(currentDataTable, currentSeriesKeys);
+          this.classList.remove("hoverHighlight");
+        });
+        row.addEventListener("click", function () {
+          const field = this.getAttribute("data-field");
+          const value = this.getAttribute("data-value");
+          // Toggle persistent highlight.
+          if (persistentHighlight && persistentHighlight.field === field && persistentHighlight.value === value) {
+            persistentHighlight = null;
+            this.classList.remove("persistentHighlight");
+          } else {
+            persistentHighlight = { field: field, value: value.toLowerCase(), team: this.parentElement.parentElement.querySelector("th:nth-child(2)").innerText };
+            // Remove persistent highlight from other rows.
+            document.querySelectorAll(".summaryRow").forEach(r => r.classList.remove("persistentHighlight"));
+            this.classList.add("persistentHighlight");
+          }
+          drawChart(currentDataTable, currentSeriesKeys);
+        });
+      });
     }
+
 
     // --- Navigation & Resize ---
     function showNextMatch() {
